@@ -1,0 +1,40 @@
+name: Validate approved Avenzo brand refresh
+on:
+  push:
+    paths:
+      - 'brand-refresh/**'
+      - '.github/workflows/avenzo-brand-refresh.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: avenzo-brand-refresh-validation
+  cancel-in-progress: false
+jobs:
+  validate-and-prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Read the exact approved repository commit
+        shell: bash
+        run: |
+          git init .
+          git remote add origin https://github.com/chatgpt20251991/Websiteproef-verbeteren.git
+          git fetch --depth=1 origin "$GITHUB_SHA"
+          git checkout --detach FETCH_HEAD
+      - name: Verify safe and repeatable header and footer replacement
+        run: python3 -m unittest discover -s brand-refresh/tests -v
+      - name: Prepare nine updated public HTML pages without deploying
+        run: python3 brand-refresh/prepare_candidate.py
+      - name: Keep the deployment status explicit
+        run: |
+          echo '## Avenzo brand refresh' >> "$GITHUB_STEP_SUMMARY"
+          echo 'The approved implementation was tested and a patch was prepared. This job does NOT publish to avenzodigital.nl and has no DNS, mailbox or hosting access.' >> "$GITHUB_STEP_SUMMARY"
+          cat brand-refresh-candidate/validation-report.json >> "$GITHUB_STEP_SUMMARY"
+      - name: Save the patch, not a complete site or a live deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-approved-brand-refresh-patch
+          path: brand-refresh-candidate/
+          if-no-files-found: error
+          retention-days: 14
