@@ -1,0 +1,43 @@
+name: Prepare full 3D build resources (no deployment)
+on:
+  push:
+    branches: [avenzo-full3d-20260909]
+    paths: ['.github/workflows/avenzo-full3d-resources.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  resources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bundle MIT licensed engine for a self contained website
+        run: |
+          mkdir -p resources/vendor resources/reference
+          npm install --prefix /tmp/avbuild three@0.180.0 esbuild@0.25.9 --ignore-scripts --no-audit --no-fund
+          printf "export * from 'three';\nexport { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';\nexport { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';\n" > /tmp/avbuild/entry.js
+          /tmp/avbuild/node_modules/.bin/esbuild /tmp/avbuild/entry.js --bundle --minify --format=iife --global-name=AV3D --outfile=resources/vendor/three-0.180.0.min.js --legal-comments=inline
+          cp /tmp/avbuild/node_modules/three/LICENSE resources/vendor/THREE-LICENSE.txt
+      - name: Read reference without login or bypass
+        continue-on-error: true
+        run: |
+          python -m pip install -q yt-dlp
+          timeout 100 yt-dlp --no-playlist --no-warnings --socket-timeout 15 --retries 1 --extractor-retries 1 --max-filesize 45M -f 'best[ext=mp4][height<=1280]/best[height<=1280]' --write-info-json --write-thumbnail -o 'resources/reference/reference.%(ext)s' 'https://www.youtube.com/shorts/UcWTeZepXJc' > resources/reference/status.txt 2>&1 || true
+          python - <<'PY'
+          import urllib.request,json
+          from pathlib import Path
+          root=Path('resources/reference')
+          for name,url in [('oembed.json','https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=UcWTeZepXJc&format=json'),('watch.html','https://www.youtube.com/watch?v=UcWTeZepXJc'),('thumbnail.jpg','https://i.ytimg.com/vi/UcWTeZepXJc/maxresdefault.jpg')]:
+              try:
+                  with urllib.request.urlopen(url,timeout=20) as r:
+                      data=r.read(5*1024*1024)
+                  (root/name).write_bytes(data)
+              except Exception as e:
+                  (root/(name+'.error.txt')).write_text(str(e))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-full3d-build-resources
+          path: resources/
+          retention-days: 2
