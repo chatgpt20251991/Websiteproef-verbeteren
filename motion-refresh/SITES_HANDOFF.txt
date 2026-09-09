@@ -1,0 +1,5 @@
+Pas motion-refresh uit de branch avenzo-motion-20260909 van chatgpt20251991/Websiteproef-verbeteren toe op de BESTAANDE Avenzo-site. Gebruik de oorspronkelijke templates. Neem het al goedgekeurde brand-refresh logo/footer mee. Behoud bestaande afbeeldingen, routes, teksten, formulier, DNS en mail.
+
+Lees motion-refresh/README.md. CSS na bestaande CSS laden, JS met defer. Controleer mobiel, desktop, 3840px, toetsenbord, minder beweging en pauzeknop. Publiceer pas na die controle dezelfde bestaande site en verifieer daarna het hoofddomein en www.
+
+Dit is een geteste CSS/SVG-bewegingslaag, GEEN geanimeerde 3D-robot en GEEN native 4K-fotografie. De gemeten publieke bronnen zijn maximaal 1672px breed voor de hero. Zoek eventuele echte grotere originelen in deze oorspronkelijke Work-omgeving; gebruik build_media.py alleen op echte bronbestanden. Geen afbeelding alleen vergroten en vervolgens 'native 4K' noemen. Geen nieuw ontwerp genereren zonder opdracht.
