@@ -1,0 +1,128 @@
+name: Avenzo public connectivity diagnostics
+
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-diagnostics.yml'
+  workflow_dispatch:
+
+# No repository token permissions, secrets, checkout or write operations.
+permissions: {}
+
+jobs:
+  public-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect public DNS and HTTP without changing services
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          """Read-only public DNS and HTTP diagnostics. No credentials or mail access."""
+          from concurrent.futures import ThreadPoolExecutor
+          from datetime import datetime, timezone
+          from html.parser import HTMLParser
+          import json
+          import os
+          import ssl
+          from urllib.error import HTTPError
+          from urllib.parse import urlencode, urlparse
+          from urllib.request import Request, urlopen
+          
+          DOMAIN = "avenzodigital.nl"
+          PREVIEW = "avenzo-digital.ll33555555.chatgpt.site"
+          TIMEOUT = 12
+          MAX_BYTES = 524288
+          CONTEXT = ssl.create_default_context()
+          
+          
+          class PageMetadata(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.in_title = False
+                  self.title_parts = []
+                  self.forms = 0
+                  self.has_expected_mailto = False
+          
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if tag == "title":
+                      self.in_title = True
+                  elif tag == "form":
+                      self.forms += 1
+                  elif tag == "a":
+                      href = attrs.get("href", "")
+                      if href.lower().split("?", 1)[0] == "mailto:info@" + DOMAIN:
+                          self.has_expected_mailto = True
+          
+              def handle_endtag(self, tag):
+                  if tag == "title":
+                      self.in_title = False
+          
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title_parts.append(data)
+          
+          
+          def dns_query(item):
+              endpoint, name, kind = item
+              result = {"resolver": endpoint, "name": name, "type": kind}
+              url = endpoint + "?" + urlencode({"name": name, "type": kind})
+              try:
+                  req = Request(url, headers={"Accept": "application/dns-json", "User-Agent": "AvenzoDiagnostics/1.0"})
+                  with urlopen(req, timeout=TIMEOUT, context=CONTEXT) as response:
+                      raw = response.read(MAX_BYTES + 1)
+                  if len(raw) > MAX_BYTES:
+                      raise ValueError("DNS response exceeded size limit")
+                  data = json.loads(raw)
+                  result.update({key: data.get(key) for key in ("Status", "AD", "CD", "Answer", "Authority", "Comment") if key in data})
+              except Exception as exc:
+                  result["error"] = f"{type(exc).__name__}: {exc}"[:600]
+              return result
+          
+          
+          def http_probe(url):
+              result = {"requested_url": url}
+              try:
+                  req = Request(url, headers={"User-Agent": "AvenzoDiagnostics/1.0", "Accept": "text/html"})
+                  with urlopen(req, timeout=TIMEOUT, context=CONTEXT) as response:
+                      raw = response.read(MAX_BYTES + 1)
+                      result.update({"status": response.status, "final_url": response.geturl(), "content_type": response.headers.get("Content-Type", ""), "server": response.headers.get("Server", ""), "body_truncated": len(raw) > MAX_BYTES})
+                      charset = response.headers.get_content_charset() or "utf-8"
+                  result["final_https"] = urlparse(result["final_url"]).scheme == "https"
+                  if "html" in result["content_type"].lower():
+                      parser = PageMetadata()
+                      try:
+                          text = raw[:MAX_BYTES].decode(charset, errors="replace")
+                      except LookupError:
+                          text = raw[:MAX_BYTES].decode("utf-8", errors="replace")
+                      parser.feed(text)
+                      result.update({"title": " ".join("".join(parser.title_parts).split())[:240], "forms_in_initial_html": parser.forms, "info_mailto_in_initial_html": parser.has_expected_mailto})
+              except HTTPError as exc:
+                  result.update({"status": exc.code, "final_url": exc.geturl(), "error": "HTTPError"})
+              except Exception as exc:
+                  result["error"] = f"{type(exc).__name__}: {exc}"[:600]
+              return result
+          
+          
+          def main():
+              questions = [(DOMAIN, t) for t in ("A", "AAAA", "NS", "MX", "TXT", "CAA")]
+              questions += [("www." + DOMAIN, t) for t in ("A", "AAAA", "CNAME")]
+              questions += [("_dmarc." + DOMAIN, "TXT"), ("x._domainkey." + DOMAIN, "TXT"), (PREVIEW, "A"), ("example.com", "A")]
+              resolvers = ["https://dns.google/resolve", "https://cloudflare-dns.com/dns-query"]
+              urls = [scheme + "://" + host + "/" for host in (DOMAIN, "www." + DOMAIN, PREVIEW) for scheme in ("https", "http")]
+              with ThreadPoolExecutor(max_workers=8) as pool:
+                  dns_results = list(pool.map(dns_query, [(r, name, kind) for r in resolvers for name, kind in questions]))
+                  http_results = list(pool.map(http_probe, urls))
+              report = {"checked_at_utc": datetime.now(timezone.utc).isoformat(), "scope": "Public DNS and HTTP GET only; no email sent; no login; no configuration modified.", "limitations": ["A successful diagnostics job is not a claim that services are healthy.", "HTTP 200 does not prove the intended website design or forms are functioning.", "Only server-delivered HTML is inspected; JavaScript is not executed.", "DNS record presence does not verify authenticated IMAP/SMTP, deliverability or automation.", "Resolver failure is not proof that the domain is misconfigured."], "dns": dns_results, "http": http_results}
+              text = json.dumps(report, ensure_ascii=True, indent=2)
+              print(text)
+              summary = os.environ.get("GITHUB_STEP_SUMMARY")
+              if summary:
+                  with open(summary, "a", encoding="utf-8") as handle:
+                      handle.write("# Avenzo public diagnostics\n\nRead-only observations, not a deployment or mailbox end-to-end test.\n\n```json\n" + text + "\n```\n")
+          
+          
+          if __name__ == "__main__":
+              main()
+          PY
