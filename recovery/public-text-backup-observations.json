@@ -1,0 +1,63 @@
+{
+  "scope": "Publicly served HTML, CSS and JavaScript snapshots only. Not original project source. No images or font files copied. No deployment, DNS, mail or recurring tasks modified.",
+  "observations": [
+    {
+      "checked_at_utc": "2026-09-09T04:31:25.912826+00:00",
+      "source_url": "https://avenzodigital.nl/",
+      "final_url": "https://avenzodigital.nl/",
+      "status": 200,
+      "content_type": "text/html",
+      "title": "Van visie. Naar voorsprong. | Avenzo Digital",
+      "sha256": "aa7255baa53b3deaeede27b49297c77091fd5da3bcdd66b7fd9913e2240e3078",
+      "bytes": 15056
+    },
+    {
+      "checked_at_utc": "2026-09-09T04:31:27.279423+00:00",
+      "source_url": "https://avenzodigital.nl/contact/",
+      "final_url": "https://avenzodigital.nl/contact/",
+      "status": 200,
+      "content_type": "text/html",
+      "title": "Bespreek je project | Avenzo Digital",
+      "sha256": "315d507748dcc34953022ab84f5561669e16ae5627db6501d5a674a7e97538be",
+      "bytes": 7783
+    },
+    {
+      "checked_at_utc": "2026-09-09T04:31:28.392104+00:00",
+      "source_url": "https://avenzodigital.nl/assets/compiled/app.15bbad9d28a8afd3.js",
+      "final_url": "https://avenzodigital.nl/assets/compiled/app.15bbad9d28a8afd3.js",
+      "status": 200,
+      "content_type": "text/javascript",
+      "title": null,
+      "sha256": "15bbad9d28a8afd36409a5f828f9ab000529157ddc4429f5e57909ae54662fb4",
+      "bytes": 3090
+    },
+    {
+      "checked_at_utc": "2026-09-09T04:31:29.475057+00:00",
+      "source_url": "https://avenzodigital.nl/assets/compiled/site.b558cdf825c04438.css",
+      "final_url": "https://avenzodigital.nl/assets/compiled/site.b558cdf825c04438.css",
+      "status": 200,
+      "content_type": "text/css",
+      "title": null,
+      "sha256": "b558cdf825c04438a9a4bc75fa5c6636caf2b48e71eb037f6b35069f0c802abd",
+      "bytes": 29663
+    }
+  ],
+  "saved": [
+    {
+      "path": "recovery/published-homepage.html",
+      "commit": "ea26590e044d829c9ec26cdbb4ed22773b4cca50"
+    },
+    {
+      "path": "recovery/published-contact.html",
+      "commit": "9a9b5a8ab8b4b92a545b1f0bbb7bb3e4ddaa4827"
+    },
+    {
+      "path": "recovery/published-app.js",
+      "commit": "8bc8765d32a3967449f9368d2e9630eaf99c28fa"
+    },
+    {
+      "path": "recovery/published-site.css",
+      "commit": "bae9d4422442b57cbbe4e34bec1ceca7eaee8a30"
+    }
+  ]
+}
