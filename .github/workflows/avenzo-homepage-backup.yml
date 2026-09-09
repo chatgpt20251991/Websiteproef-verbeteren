@@ -1,4 +1,4 @@
-name: Back up publicly served Avenzo homepage
+name: Back up publicly served Avenzo text assets
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '.github/workflows/avenzo-homepage-backup.yml'
   workflow_dispatch:
 
-# Writes only a public HTML snapshot to this repository. Never deploys.
+# Writes only public HTML/CSS/JS snapshots to this repository. Never deploys.
 permissions:
   contents: write
 
@@ -19,13 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Save public homepage snapshot without changing hosting or mail
+      - name: Save public site text without changing hosting or mail
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           python3 - <<'PY'
-          """Back up the public homepage only; never modify DNS, hosting or mail."""
+          """Back up public site text only; never modify DNS, hosting or mail."""
           import base64
           import hashlib
           import json
@@ -48,7 +48,7 @@ jobs:
           
           def save(path, content):
               route = '/contents/' + quote(path, safe='/')
-              update = {'message': 'Back up publicly served Avenzo homepage (not a deployment)', 'content': base64.b64encode(content).decode()}
+              update = {'message': 'Back up publicly served Avenzo text (not a deployment)', 'content': base64.b64encode(content).decode()}
               try:
                   old = api('GET', route)
                   if base64.b64decode(old.get('content', '')) == content:
@@ -61,26 +61,36 @@ jobs:
               return {'path': path, 'commit': result['commit']['sha']}
           
           def main():
-              req = Request(URL, headers={'User-Agent': 'AvenzoRecovery/1.0', 'Accept': 'text/html'})
-              with urlopen(req, timeout=20) as response:
-                  data = response.read(LIMIT + 1)
-                  final_url = response.geturl()
-                  content_type = response.headers.get('Content-Type', '')
-                  status = response.status
-              if len(data) > LIMIT or status != 200 or 'html' not in content_type.lower():
-                  raise RuntimeError('Unexpected homepage response; nothing saved')
-              if urlparse(final_url).hostname not in {'avenzodigital.nl', 'www.avenzodigital.nl'}:
-                  raise RuntimeError('Unexpected redirect; nothing saved')
-              html = data.decode('utf-8')
-              title = re.search(r'<title[^>]*>(.*?)</title>', html, flags=re.I | re.S)
-              if not title or 'avenzo' not in title.group(1).lower():
-                  raise RuntimeError('Homepage identity check failed; nothing saved')
-              # Do not redistribute embedded font files as part of a text snapshot.
-              if re.search(r'data:(?:font/|application/(?:font|x-font)|[^;,]*(?:woff|ttf|otf))', html, flags=re.I):
-                  raise RuntimeError('Embedded font data detected; snapshot stopped')
-              observed = {'checked_at_utc': datetime.now(timezone.utc).isoformat(), 'source_url': URL, 'final_url': final_url, 'status': status, 'title': title.group(1), 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data), 'scope': 'Public homepage HTML snapshot only. Not original project source; referenced assets are not copied. No hosting, DNS, mailbox or scheduled task changes.'}
-              saved = [save('recovery/published-homepage.html', data), save('recovery/published-homepage-observation.json', (json.dumps(observed, indent=2) + '\n').encode())]
-              print(json.dumps({'observation': observed, 'saved': saved}, indent=2))
+              resources = [
+                  ('/', 'recovery/published-homepage.html', 'html'),
+                  ('/contact/', 'recovery/published-contact.html', 'html'),
+                  ('/assets/compiled/app.15bbad9d28a8afd3.js', 'recovery/published-app.js', 'javascript'),
+                  ('/assets/compiled/site.b558cdf825c04438.css', 'recovery/published-site.css', 'css'),
+              ]
+              observed, saved = [], []
+              for path, destination, kind in resources:
+                  source_url = URL.rstrip('/') + path
+                  req = Request(source_url, headers={'User-Agent': 'AvenzoRecovery/1.0'})
+                  with urlopen(req, timeout=20) as response:
+                      data = response.read(LIMIT + 1)
+                      final_url = response.geturl()
+                      content_type = response.headers.get('Content-Type', '')
+                      status = response.status
+                  if len(data) > LIMIT or status != 200 or kind not in content_type.lower():
+                      raise RuntimeError('Unexpected public resource response: ' + path)
+                  if urlparse(final_url).hostname not in {'avenzodigital.nl', 'www.avenzodigital.nl'}:
+                      raise RuntimeError('Unexpected redirect: ' + path)
+                  text = data.decode('utf-8')
+                  title = re.search(r'<title[^>]*>(.*?)</title>', text, flags=re.I | re.S) if kind == 'html' else None
+                  if kind == 'html' and (not title or 'avenzo' not in title.group(1).lower()):
+                      raise RuntimeError('Page identity check failed: ' + path)
+                  if re.search(r'data:(?:font/|application/(?:font|x-font)|[^;,]*(?:woff|ttf|otf))', text, flags=re.I):
+                      raise RuntimeError('Embedded font data detected; snapshot stopped: ' + path)
+                  observed.append({'checked_at_utc': datetime.now(timezone.utc).isoformat(), 'source_url': source_url, 'final_url': final_url, 'status': status, 'content_type': content_type, 'title': title.group(1) if title else None, 'sha256': hashlib.sha256(data).hexdigest(), 'bytes': len(data)})
+                  saved.append(save(destination, data))
+              report = {'scope': 'Publicly served HTML, CSS and JavaScript snapshots only. Not original project source. No images or font files copied. No deployment, DNS, mail or recurring tasks modified.', 'observations': observed, 'saved': saved}
+              saved.append(save('recovery/public-text-backup-observations.json', (json.dumps(report, indent=2) + '\n').encode()))
+              print(json.dumps(report, indent=2))
           
           if __name__ == '__main__':
               main()
