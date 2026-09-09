@@ -1,0 +1,59 @@
+name: Render Avenzo cinematic cover masters
+on:
+  push:
+    branches: [avenzo-cinema-20260909]
+    paths: ['.github/workflows/avenzo-cinema-posters.yml']
+permissions:
+  contents: read
+jobs:
+  cover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        layout: [desktop, portrait]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare renderer
+        run: |
+          curl -fLs --retry 2 'https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz' -o /tmp/blender.tar.xz
+          tar -xf /tmp/blender.tar.xz -C /tmp
+          python -m pip install -q Pillow==11.3.0
+          python - <<'PY'
+          import base64,gzip
+          from pathlib import Path
+          text=gzip.decompress(base64.b64decode(Path('cinema/render.py.gz.b64').read_text().replace('fssYqF0FN','fssYqF7FN'))).decode()
+          text=text.replace('scene.render.resolution_y=round(W*9/16)','scene.render.resolution_y=int(os.environ.get("AV_HEIGHT",round(W*9/16)))')
+          if '${{ matrix.layout }}'=='portrait':
+              text=text.replace('lookat((2+math.sin(angle)*15,-math.cos(angle)*15,6.5),(.0,.12,2.15));camera.data.lens=52','lookat((2+math.sin(angle)*17,-math.cos(angle)*17,6.5),(2,.12,3.8));camera.data.lens=44')
+          Path('/tmp/cover.py').write_text(text)
+          PY
+      - name: Render original master
+        env:
+          AV_MODE: test
+          AV_SAMPLES: '12'
+          AV_WIDTH: ${{ matrix.layout == 'desktop' && '3840' || '2160' }}
+          AV_HEIGHT: ${{ matrix.layout == 'desktop' && '2160' || '3840' }}
+        run: |
+          /tmp/blender-4.5.3-linux-x64/blender -b -t 4 --python /tmp/cover.py -- output > render.log 2>&1
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json
+          Path('delivery').mkdir()
+          im=Image.open('output/test.png')
+          im.save('delivery/cover-${{ matrix.layout }}.webp','WEBP',quality=93,method=5)
+          Path('delivery/cover-${{ matrix.layout }}.json').write_text(json.dumps({'width':im.width,'height':im.height,'native':True,'upscaled':False}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-cinema-cover-${{ matrix.layout }}
+          path: delivery/
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: avenzo-cover-diagnostic-${{ matrix.layout }}
+          path: render.log
+          retention-days: 1
