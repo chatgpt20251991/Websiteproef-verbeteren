@@ -1,0 +1,88 @@
+name: Complete Avenzo UHD frames in bounded batches
+on:
+  push:
+    branches: [avenzo-cinema-20260909]
+    paths: ['.github/workflows/avenzo-cinema-recover.yml']
+permissions:
+  contents: read
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare original scene and renderer
+        run: |
+          curl -fLs --retry 2 'https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz' -o /tmp/blender.tar.xz
+          tar -xf /tmp/blender.tar.xz -C /tmp
+          python -m pip install -q Pillow==11.3.0
+          python - <<'PY'
+          import base64,gzip
+          from pathlib import Path
+          Path('/tmp/render.py').write_bytes(gzip.decompress(base64.b64decode(Path('cinema/render.py.gz.b64').read_text().replace('fssYqF0FN','fssYqF7FN'))))
+          PY
+      - name: Render two native UHD frames
+        continue-on-error: true
+        env:
+          AV_MODE: sequence
+          AV_WIDTH: '3840'
+          AV_SAMPLES: '6'
+          AV_COUNT: '72'
+          PART: ${{ matrix.part }}
+        run: |
+          export AV_START=$((PART * 2)) AV_END=$((PART * 2 + 1))
+          timeout 540 /tmp/blender-4.5.3-linux-x64/blender -b -t 4 --python /tmp/render.py -- output > render.log 2>&1
+      - name: Preserve all completed native frames
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json
+          out=Path('delivery');out.mkdir(exist_ok=True)
+          rows=[]
+          for p in sorted(Path('output').glob('frame-*.png')):
+              try:
+                  im=Image.open(p);im.load();assert im.size==(3840,2160)
+                  im.save(out/(p.stem+'.webp'),'WEBP',quality=91,method=5)
+                  rows.append({'frame':p.stem,'width':3840,'height':2160,'upscaled':False})
+              except Exception as e: print(str(e))
+          (out/'batch-${{ matrix.part }}.json').write_text(json.dumps(rows,indent=2))
+          assert len(rows)==2, 'Some frames did not complete; completed files are retained'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frames-recovered-${{ matrix.part }}
+          path: delivery/
+          retention-days: 2
+  collect:
+    needs: render
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: frames-recovered-*
+          path: combined
+          merge-multiple: true
+      - name: Verify contiguous missing-frame range
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          actual={p.stem for p in Path('combined').glob('frame-*.webp')}
+          missing=[i for i in range(64) if f'frame-{i:03d}' not in actual]
+          Path('combined/completion.json').write_text(json.dumps({'completed':len(actual),'missing':missing,'published':False},indent=2))
+          print('Missing',missing)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-cinema-completed-frames
+          path: combined/
+          retention-days: 7
