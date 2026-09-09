@@ -1,0 +1,62 @@
+name: Render Avenzo cinematic UHD sequence
+on:
+  push:
+    branches: [avenzo-cinema-20260909]
+    paths: ['.github/workflows/avenzo-cinema-frames.yml']
+permissions:
+  contents: read
+jobs:
+  frames:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        part: [0,1,2,3,4,5,6,7,8]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare renderer and validate compressed source
+        run: |
+          curl -fLs --retry 2 'https://download.blender.org/release/Blender4.5/blender-4.5.3-linux-x64.tar.xz' -o /tmp/blender.tar.xz
+          tar -xf /tmp/blender.tar.xz -C /tmp
+          python -m pip install -q Pillow==11.3.0
+          python - <<'PY'
+          import base64,gzip
+          from pathlib import Path
+          data=Path('cinema/render.py.gz.b64').read_text().replace('fssYqF0FN','fssYqF7FN')
+          Path('/tmp/render.py').write_bytes(gzip.decompress(base64.b64decode(data)))
+          PY
+      - name: Render eight actual 3840 by 2160 frames
+        env:
+          PART: ${{ matrix.part }}
+          AV_MODE: sequence
+          AV_WIDTH: '3840'
+          AV_SAMPLES: '6'
+          AV_COUNT: '72'
+        run: |
+          export AV_START=$((PART * 8)) AV_END=$((PART * 8 + 7))
+          /tmp/blender-4.5.3-linux-x64/blender -b -t 4 --python /tmp/render.py -- output > render.log 2>&1
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import json,os
+          out=Path('delivery');out.mkdir()
+          rows=[]
+          for p in sorted(Path('output').glob('frame-*.png')):
+              im=Image.open(p);assert im.size==(3840,2160)
+              im.save(out/(p.stem+'.webp'),'WEBP',quality=91,method=5)
+              rows.append({'name':p.stem,'width':im.width,'height':im.height,'upscaled':False})
+          assert len(rows)==8
+          (out/('part-'+os.environ['PART']+'.json')).write_text(json.dumps(rows,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-cinema-frames-${{ matrix.part }}
+          path: delivery/
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: avenzo-render-diagnostic-${{ matrix.part }}
+          path: render.log
+          retention-days: 1
