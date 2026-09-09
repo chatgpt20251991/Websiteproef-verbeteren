@@ -1,0 +1,66 @@
+name: Avenzo mailbox connection preflight
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'operations/check_mail_connection.py'
+      - 'tests/test_mail_connection.py'
+      - '.github/workflows/avenzo-mail-connection-check.yml'
+  workflow_dispatch:
+    inputs:
+      live_login:
+        description: 'Check real Vimexx login (no mail read or sent; requires secret)'
+        required: true
+        default: false
+        type: boolean
+
+# No recurring schedule, deployment, token permissions or third-party actions.
+permissions: {}
+concurrency:
+  group: avenzo-mail-preflight-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  offline-safety-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Fetch public source at this exact commit (no credentials)
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          base="https://raw.githubusercontent.com/chatgpt20251991/Websiteproef-verbeteren/$SOURCE_COMMIT"
+          mkdir -p operations tests
+          curl --proto '=https' --tlsv1.2 --fail --silent --show-error --max-time 30 "$base/operations/check_mail_connection.py" -o operations/check_mail_connection.py
+          curl --proto '=https' --tlsv1.2 --fail --silent --show-error --max-time 30 "$base/tests/test_mail_connection.py" -o tests/test_mail_connection.py
+      - name: Run mocked tests (not a real mailbox connection)
+        run: python3 -m unittest discover -s tests -v
+      - name: State the test scope
+        run: |
+          echo 'Offline safety tests only. This job has no mailbox secret, makes no IMAP/SMTP connections, sends no mail, and enables no automation.' >> "$GITHUB_STEP_SUMMARY"
+
+  mail-login:
+    needs: offline-safety-tests
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.live_login && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Fetch fixed public preflight source without the mailbox secret
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          mkdir -p operations
+          curl --proto '=https' --tlsv1.2 --fail --silent --show-error --max-time 30 "https://raw.githubusercontent.com/chatgpt20251991/Websiteproef-verbeteren/$SOURCE_COMMIT/operations/check_mail_connection.py" -o operations/check_mail_connection.py
+      - name: Check IMAP readonly access and SMTP AUTH; no message contents or sending
+        env:
+          AVENZO_MAIL_PASSWORD: ${{ secrets.AVENZO_MAIL_PASSWORD }}
+        run: python3 operations/check_mail_connection.py
+      - name: State what this does not enable
+        if: always()
+        run: |
+          echo 'Login preflight only: no message content read, no email sent, no website changes, no ChatGPT mailbox connector and no follow-up schedule. Missing credentials or failed checks produce a nonzero exit code.' >> "$GITHUB_STEP_SUMMARY"
