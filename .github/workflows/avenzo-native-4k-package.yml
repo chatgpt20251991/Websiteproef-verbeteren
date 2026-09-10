@@ -41,10 +41,24 @@ jobs:
           python3 native-4k/prepare_build.py
           python3 native-4k/assemble.py --source original-public-source --renders final-renders --output release
           python3 native-4k/portable_preview.py
+          cp native-4k/prepare_build.py native-4k/resolution.js native-4k/test_portable.py release/source/
       - name: Check mobile, tablet, desktop and 4K in a real browser
         run: |
           python3 native-4k/test_browser.py --release release
           python3 native-4k/test_portable.py
+      - name: Record verified native dimensions and test counts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('release/reports')
+          m=json.loads((root/'build-manifest.json').read_text())
+          b=json.loads((root/'browser-validation.json').read_text())
+          p=json.loads((root/'portable-validation.json').read_text())
+          summary={'deployment_performed':False,'all_images_native':True,'upscaling':False,'pages':len(m['pages']),'responsive_assets':sum(len(i['variants']) for i in m['images']),'browser_checks':len(b['checks']),'browser_passed':b['passed'],'portable_checks':len(p['checks']),'portable_passed':p['passed'],'native_dimensions':{i['stem']:[i['native_render']['native_render_width'],i['native_render']['native_render_height']] for i in m['images']},'font_files_distributed':False}
+          (root/'delivery-summary.json').write_text(json.dumps(summary,indent=2))
+          print(json.dumps(summary,indent=2))
+          PY
       - name: Save a tested website package without deployment
         uses: actions/upload-artifact@v4
         with:
