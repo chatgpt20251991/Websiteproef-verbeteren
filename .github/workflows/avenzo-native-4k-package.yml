@@ -55,7 +55,7 @@ jobs:
           m=json.loads((root/'build-manifest.json').read_text())
           b=json.loads((root/'browser-validation.json').read_text())
           p=json.loads((root/'portable-validation.json').read_text())
-          summary={'deployment_performed':False,'all_images_native':True,'upscaling':False,'pages':len(m['pages']),'responsive_assets':sum(len(i['variants']) for i in m['images']),'browser_checks':len(b['checks']),'browser_passed':b['passed'],'portable_checks':len(p['checks']),'portable_passed':p['passed'],'native_dimensions':{i['stem']:[i['native_render']['native_render_width'],i['native_render']['native_render_height']] for i in m['images']},'font_files_distributed':False}
+          summary={'deployment_performed':False,'all_images_native':True,'upscaling':False,'pages':len(m['pages']),'responsive_assets':sum(len(i['variants']) for i in m['images']),'browser_checks':len(b['checks']),'browser_passed':b['passed'],'portable_checks':len(p['checks']),'portable_passed':p['passed'],'native_dimensions':{i['stem']:[i['native_render']['native_render_width'],i['native_render']['native_render_height']] for i in m['images']},'font_files_distributed':False,'wide_hero_vertical_focal_point':'68% above 2400 CSS pixels, based on measured device bounds'}
           (root/'delivery-summary.json').write_text(json.dumps(summary,indent=2))
           print(json.dumps(summary,indent=2))
           PY
