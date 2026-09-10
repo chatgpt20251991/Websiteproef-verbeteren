@@ -1,0 +1,60 @@
+name: Avenzo genuine native 4K renders
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-native-4k-renders.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  render:
+    name: Native 4K ${{ matrix.scene }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix:
+        scene:
+          - hero-desktop-apps
+          - hero-mobile-apps
+          - service-web
+          - service-ai
+          - service-software
+          - service-data
+          - service-search
+          - service-testing
+          - software-closeup
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve and verify the pinned official Blender renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/renderer
+          cd /tmp/renderer
+          curl -fsSL --retry 2 --max-time 180 -O https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          curl -fsSL --retry 2 --max-time 60 -o published.sha256 https://download.blender.org/release/Blender4.2/blender-4.2.3.sha256
+          grep 'blender-4.2.3-linux-x64.tar.xz$' published.sha256 | sha256sum --check
+          tar -xf blender-4.2.3-linux-x64.tar.xz
+      - name: Apply the already tested Blender material compatibility correction
+        run: |
+          sed -i 's/Anisotropic IOR Level/Anisotropic/g' native-4k/render.py
+          python3 -m py_compile native-4k/render.py
+      - name: Compute the final image directly at native 3840 pixels
+        env:
+          SCENE: ${{ matrix.scene }}
+        run: |
+          mkdir final-renders
+          /tmp/renderer/blender-4.2.3-linux-x64/blender -b -t 4 --python-exit-code 1 --python native-4k/render.py -- --scene "$SCENE" --width 3840 --samples 32 --output final-renders
+          test -s "final-renders/$SCENE.png"
+          test -s "final-renders/$SCENE.json"
+          cat "final-renders/$SCENE.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Store the native image and provenance, without deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-final-native-${{ matrix.scene }}
+          path: final-renders/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
