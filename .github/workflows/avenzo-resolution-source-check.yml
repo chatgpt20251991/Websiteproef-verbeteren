@@ -1,0 +1,107 @@
+name: Avenzo original image resolution check
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-resolution-source-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-public-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Collect original public pages and referenced assets
+        shell: bash
+        run: |
+          python3 -m pip -q install Pillow
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from urllib.parse import urljoin, urlparse, unquote
+          from html.parser import HTMLParser
+          from concurrent.futures import ThreadPoolExecutor
+          from PIL import Image
+          import re, io, json, hashlib
+          root = Path('avenzo-public-source')
+          root.mkdir()
+          base = 'https://avenzodigital.nl/'
+          allowed_hosts = {'avenzodigital.nl', 'www.avenzodigital.nl'}
+          routes = ['', 'contact/', 'studio/', 'expertise/websites-conversie/', 'expertise/ai-automatisering/', 'expertise/software-portalen/', 'expertise/data-dashboards/', 'expertise/vindbaarheid-onderzoek/', 'expertise/testen-doorontwikkeling/']
+          asset_urls = set()
+          report = {'deployment_performed': False, 'font_files_included': False, 'pages': [], 'assets': [], 'additional_source_checks': []}
+          class Extractor(HTMLParser):
+              def handle_starttag(self, tag, pairs):
+                  a = dict(pairs)
+                  if tag in ('img', 'source', 'script', 'video'):
+                      for key in ('src', 'poster'):
+                          if a.get(key): asset_urls.add(urljoin(base, a[key]))
+                      for item in a.get('srcset', '').split(','):
+                          if item.strip(): asset_urls.add(urljoin(base, item.strip().split()[0]))
+                  if tag == 'link' and a.get('href') and a.get('rel') in ('stylesheet', 'icon'):
+                      asset_urls.add(urljoin(base, a['href']))
+          def read(url):
+              p = urlparse(url)
+              if p.hostname not in allowed_hosts or p.scheme != 'https': raise ValueError('Outside public site')
+              with urlopen(Request(url, headers={'User-Agent': 'Avenzo-Owner-Resolution-Check/1.0'}), timeout=25) as r:
+                  if urlparse(r.url).hostname not in allowed_hosts: raise ValueError('Redirect outside site')
+                  data = r.read(26000001)
+                  if len(data)>26000000: raise ValueError('Asset too large')
+                  return data, r.headers.get_content_type()
+          for route in routes:
+              url = base + route
+              data, mime = read(url)
+              if mime != 'text/html': raise ValueError('Expected page HTML')
+              path = root / route / 'index.html'
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_bytes(data)
+              Extractor().feed(data.decode('utf-8'))
+              report['pages'].append({'path': route or '/', 'sha256': hashlib.sha256(data).hexdigest()})
+          def save(url):
+              try:
+                  parsed=urlparse(url)
+                  rel=unquote(parsed.path).lstrip('/')
+                  if '..' in Path(rel).parts: raise ValueError('Unsafe path')
+                  if not rel.startswith('assets/'): return None
+                  if Path(rel).suffix.lower() in ('.woff','.woff2','.ttf','.otf','.eot'): return None
+                  data,mime=read(url)
+                  path=root/rel
+                  path.parent.mkdir(parents=True,exist_ok=True)
+                  path.write_bytes(data)
+                  item={'url':url,'path':rel,'mime':mime,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
+                  if mime.startswith('image/') and not mime.endswith('svg+xml'):
+                      with Image.open(io.BytesIO(data)) as im: item.update(width=im.width,height=im.height)
+                  if rel.endswith('.css'):
+                      text=data.decode('utf-8')
+                      for v in re.findall(r'url\([\s\"\']*([^\)\"\']+)',text):
+                          asset_urls.add(urljoin(url,v.strip()))
+                  return item
+              except Exception as e:
+                  return {'url':url,'error':str(e)[:180]}
+          # CSS first, so background image references are also included.
+          css_urls={u for u in asset_urls if urlparse(u).path.endswith('.css')}
+          for url in sorted(css_urls):
+              item=save(url)
+              if item: report['assets'].append(item)
+          with ThreadPoolExecutor(max_workers=6) as pool:
+              for item in pool.map(save, sorted(asset_urls-css_urls)):
+                  if item: report['assets'].append(item)
+          # Check only ordinary public image filenames next to the existing hero.
+          # No administration, credentials, private endpoints, DNS or deployment.
+          hero_urls=[a['url'] for a in report['assets'] if 'hero-desktop-apps-' in a.get('path','') and 'width' in a]
+          if hero_urls:
+              stem=re.sub(r'-\d+\.webp$', '', max(hero_urls, key=lambda u: int(re.search(r'-(\d+)\.webp$',u).group(1))))
+              candidates=[stem+'-'+str(w)+'.webp' for w in (1920,2560,3840,4096)] + [stem+ext for ext in ('.webp','.png','.jpg')]
+              with ThreadPoolExecutor(max_workers=4) as pool:
+                  for item in pool.map(save,candidates):
+                      if item: report['additional_source_checks'].append(item)
+          (root/'source-resolution-report.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Save original pages, images and styles, without font files
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-original-public-source-resolution-check
+          path: avenzo-public-source/
+          retention-days: 7
+          if-no-files-found: error
