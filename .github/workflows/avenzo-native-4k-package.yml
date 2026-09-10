@@ -1,0 +1,64 @@
+name: Assemble and test Avenzo native 4K website
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-native-4k-package.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  assemble-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require completion of the exact nine-scene native render run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run watch 34535503130 --repo chatgpt20251991/Websiteproef-verbeteren --exit-status --interval 20
+      - name: Retrieve the original public website snapshot
+        uses: actions/download-artifact@v4
+        with:
+          name: avenzo-original-public-source-resolution-check
+          path: original-public-source
+          run-id: 34530730425
+          github-token: ${{ github.token }}
+      - name: Retrieve all nine native PNG renders and their provenance
+        uses: actions/download-artifact@v4
+        with:
+          pattern: avenzo-final-native-*
+          path: final-renders
+          run-id: 34535503130
+          merge-multiple: true
+          github-token: ${{ github.token }}
+      - name: Install the release-build and browser-test dependencies
+        run: |
+          python3 -m pip install --disable-pip-version-check Pillow==11.3.0 beautifulsoup4==4.13.4 playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+      - name: Build the preserved nine-page website with native assets
+        run: |
+          python3 native-4k/prepare_build.py
+          python3 native-4k/assemble.py --source original-public-source --renders final-renders --output release
+      - name: Check mobile, tablet, desktop and 4K in a real browser
+        run: python3 native-4k/test_browser.py --release release
+      - name: Save a tested website package without deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: Avenzo-Digital-Native-4K
+          path: release/
+          retention-days: 14
+          compression-level: 0
+          if-no-files-found: error
+      - name: Preserve diagnostics when a validation fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Avenzo-4K-validation-diagnostics
+          path: release/
+          retention-days: 3
+          if-no-files-found: ignore
+      - name: Keep publication status explicit
+        run: |
+          echo 'All native image, page and browser checks completed. This package has NOT been deployed to avenzodigital.nl.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'No DNS, hosting, mailbox, payment or live-site changes have been made.' >> "$GITHUB_STEP_SUMMARY"
