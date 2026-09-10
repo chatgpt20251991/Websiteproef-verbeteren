@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - '.github/workflows/avenzo-original-html-repair.yml'
+      - 'original-html-repair-20260911/**'
   workflow_dispatch:
 permissions:
   contents: read
