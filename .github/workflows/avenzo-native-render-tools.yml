@@ -1,0 +1,33 @@
+name: Prepare Avenzo native 4K render toolchain
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-native-render-tools.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare-renderer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Retrieve a pinned official renderer and check its published digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir toolchain
+          cd toolchain
+          curl --fail --location --retry 2 --max-time 180 -o blender-4.2.3-linux-x64.tar.xz https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          curl --fail --location --retry 2 --max-time 60 -o published.sha256 https://download.blender.org/release/Blender4.2/blender-4.2.3.sha256
+          grep 'blender-4.2.3-linux-x64.tar.xz$' published.sha256 > verified.sha256
+          test -s verified.sha256
+          sha256sum --check verified.sha256
+          echo 'Development toolchain only. No images upscaled. No website published. No DNS or hosting changes.' > STATUS.txt
+      - name: Transfer verified toolchain for local native rendering
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-native-render-toolchain-internal
+          path: toolchain/
+          compression-level: 0
+          retention-days: 1
+          if-no-files-found: error
