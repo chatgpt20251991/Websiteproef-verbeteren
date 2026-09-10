@@ -52,7 +52,9 @@ def main():
           page.set_viewport_size({'width':width,'height':height})
           for path in pages:
             route='/'+path.relative_to(SITE).as_posix().removesuffix('index.html')
-            errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+            errors=[]
+            handler=lambda e:errors.append(str(e))
+            page.on('pageerror',handler)
             response=page.goto(base+route,wait_until='domcontentloaded',timeout=30000);ready(page)
             state=snapshot(page);state.update(kind='hosting-html',route=route,width=width,http_status=response.status,js_errors=list(errors))
             records.append(state)
@@ -61,7 +63,7 @@ def main():
             assert not errors,errors
             if route=='/' and width in (390,1440,3840):
               page.screenshot(path=str(REPORT/('voorpagina-'+str(width)+'.png')),full_page=False)
-          page.remove_all_listeners('pageerror')
+            page.remove_listener('pageerror',handler)
         for width,height in [(390,844),(1440,900)]:
           page.set_viewport_size({'width':width,'height':height})
           direct=[OUT/'AVENZO.html']+sorted((OUT/'paginas').rglob('*.html'))
@@ -72,7 +74,6 @@ def main():
             records.append(state)
             assert not state['overflow'] and not state['brokenImages'],json.dumps(state)
             assert state['headerLogoCount']==1 and state['footerLogoCount']==1
-        # Real local navigation, not a picture with decorative buttons.
         page.set_viewport_size({'width':390,'height':844})
         page.goto((OUT/'AVENZO.html').as_uri());ready(page)
         page.locator('.menu-toggle').click()
@@ -91,7 +92,6 @@ def main():
         detail.locator('summary').click()
         assert (detail.get_attribute('open') is not None)!=original_open
         interactions.append({'test':'service card opens actual local detail page; accordion works','passed':True})
-        # Compare the original hero below the overlaid logo, with identical font loading.
         baseline=ROOT/'qa-original-baseline';shutil.copytree(ROOT/'original-source',baseline)
         for css in (baseline/'assets').rglob('*.css'):
           s=css.read_text();s=s.replace("url('/assets/body.woff')","url('https://avenzodigital.nl/assets/body.woff')");css.write_text(s)
