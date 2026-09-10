@@ -21,6 +21,13 @@
     for (const img of images) {
       const rect = img.getBoundingClientRect();
       const fit = getComputedStyle(img).objectFit;
+      // Measured native desktop device bounds: y=0.4266..0.7615.
+      // At 3840 CSS px the existing 1000px-tall hero crops a 2160px image.
+      // A 68% vertical focal point retains the phone instead of cutting its base.
+      if (img.classList.contains('architecture')) {
+        img.style.objectPosition = window.matchMedia('(min-width:2400px)').matches
+          ? 'center 68%' : '';
+      }
       applyHint(img, rect, fit);
       if (img.parentElement?.tagName === 'PICTURE') {
         for (const source of img.parentElement.querySelectorAll('source[srcset]')) {
