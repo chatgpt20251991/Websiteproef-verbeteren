@@ -1,0 +1,55 @@
+name: Avenzo native scene proofs
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-native-preview.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  render-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare verified native renderer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/renderer
+          cd /tmp/renderer
+          curl -fsSL --retry 2 --max-time 180 -O https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          curl -fsSL --retry 2 --max-time 60 -o published.sha256 https://download.blender.org/release/Blender4.2/blender-4.2.3.sha256
+          grep 'blender-4.2.3-linux-x64.tar.xz$' published.sha256 | sha256sum --check
+          tar -xf blender-4.2.3-linux-x64.tar.xz
+      - name: Render original scene proofs
+        run: |
+          /tmp/renderer/blender-4.2.3-linux-x64/blender -b -t 4 --python native-4k/render.py -- --scene hero-desktop-apps --width 960 --samples 16 --output native-4k/proofs
+          /tmp/renderer/blender-4.2.3-linux-x64/blender -b -t 4 --python native-4k/render.py -- --scene service-web --width 960 --samples 16 --output native-4k/proofs
+      - name: Save proof images to the source repository only
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import os,json,base64
+          from pathlib import Path
+          from urllib.request import Request,urlopen
+          for path in sorted(Path('native-4k/proofs').glob('*')):
+              if path.suffix not in ('.png','.json'): continue
+              url='https://api.github.com/repos/'+os.environ['REPO']+'/contents/'+str(path)
+              headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','User-Agent':'Avenzo-native-render'}
+              body={'message':'Save native scene proof '+path.name,'content':base64.b64encode(path.read_bytes()).decode()}
+              try:
+                  with urlopen(Request(url,headers=headers)) as r: body['sha']=json.load(r)['sha']
+              except Exception as e:
+                  if getattr(e,'code',None)!=404: raise
+              with urlopen(Request(url,data=json.dumps(body).encode(),headers=headers,method='PUT')) as r: print(path,r.status)
+          PY
+      - name: Preserve render proofs and evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-native-scene-proofs
+          path: native-4k/proofs/
+          retention-days: 7
+          if-no-files-found: error
