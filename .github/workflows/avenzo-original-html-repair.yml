@@ -1,0 +1,49 @@
+name: Repair original Avenzo HTML, preserve the original front page
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-original-html-repair.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  build-original-html:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve the original nine pages and original images, not the rejected renders
+        uses: actions/download-artifact@v4
+        with:
+          name: avenzo-original-public-source-resolution-check
+          run-id: 34530730425
+          github-token: ${{ github.token }}
+          path: original-source
+      - name: Install pinned HTML and browser test dependencies
+        run: |
+          python3 -m pip -q install Pillow==11.3.0 beautifulsoup4==4.13.4 playwright==1.55.0
+          python3 -m playwright install --with-deps chromium
+      - name: Produce real editable HTML and preserve original raster bytes
+        run: python3 original-html-repair-20260911/build.py
+      - name: Test mobile, desktop, UHD, local links and original-hero preservation
+        run: python3 original-html-repair-20260911/verify.py
+      - name: Summarize only observed results
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          data=json.loads(Path('html-delivery/controle/browsercontroles.json').read_text())['summary']
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as out:
+              out.write('## Original HTML repaired, not a new mockup\n\n')
+              out.write(json.dumps(data,indent=2))
+              out.write('\n\nOriginal images preserved unchanged. Native 4K raster claim: false. Deployment performed: false.\n')
+          print(json.dumps(data,indent=2))
+          PY
+      - name: Deliver the actual HTML files, images and reports, without font files
+        uses: actions/upload-artifact@v4
+        with:
+          name: Avenzo-Originele-HTML
+          path: html-delivery/
+          retention-days: 14
+          if-no-files-found: error
