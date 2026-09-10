@@ -1,0 +1,33 @@
+name: Avenzo native camera framing check
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-framing-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve verified renderer for geometry inspection only
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/renderer
+          cd /tmp/renderer
+          curl -fsSL --retry 2 --max-time 180 -O https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+          curl -fsSL --retry 2 --max-time 60 -o published.sha256 https://download.blender.org/release/Blender4.2/blender-4.2.3.sha256
+          grep 'blender-4.2.3-linux-x64.tar.xz$' published.sha256 | sha256sum --check
+          tar -xf blender-4.2.3-linux-x64.tar.xz
+      - name: Measure the projected screen boundaries
+        run: |
+          sed -i 's/Anisotropic IOR Level/Anisotropic/g' native-4k/render.py
+          /tmp/renderer/blender-4.2.3-linux-x64/blender -b --python-exit-code 1 --python native-4k/inspect_composition.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-native-framing-report
+          path: composition/
+          retention-days: 7
+          if-no-files-found: error
