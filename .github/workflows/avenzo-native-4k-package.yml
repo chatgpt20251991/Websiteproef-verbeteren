@@ -40,8 +40,11 @@ jobs:
         run: |
           python3 native-4k/prepare_build.py
           python3 native-4k/assemble.py --source original-public-source --renders final-renders --output release
+          python3 native-4k/portable_preview.py
       - name: Check mobile, tablet, desktop and 4K in a real browser
-        run: python3 native-4k/test_browser.py --release release
+        run: |
+          python3 native-4k/test_browser.py --release release
+          python3 native-4k/test_portable.py
       - name: Save a tested website package without deployment
         uses: actions/upload-artifact@v4
         with:
@@ -60,5 +63,5 @@ jobs:
           if-no-files-found: ignore
       - name: Keep publication status explicit
         run: |
-          echo 'All native image, page and browser checks completed. This package has NOT been deployed to avenzodigital.nl.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'All native image, page, browser and direct-open preview checks completed. This package has NOT been deployed to avenzodigital.nl.' >> "$GITHUB_STEP_SUMMARY"
           echo 'No DNS, hosting, mailbox, payment or live-site changes have been made.' >> "$GITHUB_STEP_SUMMARY"
