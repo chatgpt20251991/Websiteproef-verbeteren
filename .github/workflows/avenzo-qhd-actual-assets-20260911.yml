@@ -26,7 +26,7 @@ jobs:
         run: python3 -m pip -q install requests==2.32.5 Pillow==11.3.0
       - name: Generate only the original hero scene at 2560 by 1440
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
         run: python3 qhd-delivery-20260911/generate_asset.py --asset hero-desktop-apps --source original-source --output qhd-output
       - name: Keep the generated image and safe provenance, no credentials
         if: always()
@@ -57,7 +57,7 @@ jobs:
         run: python3 -m pip -q install requests==2.32.5 Pillow==11.3.0
       - name: Generate the original-reference visual, never a page screenshot
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
           ASSET: ${{ matrix.asset }}
         run: python3 qhd-delivery-20260911/generate_asset.py --asset "$ASSET" --source original-source --output qhd-output
       - name: Keep the generated image and safe provenance, no credentials
