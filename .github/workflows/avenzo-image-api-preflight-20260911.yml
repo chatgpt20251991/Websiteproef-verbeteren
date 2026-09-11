@@ -1,0 +1,44 @@
+name: Avenzo image API preflight only
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-image-api-preflight-20260911.yml'
+  workflow_dispatch:
+permissions: {}
+jobs:
+  connectivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check API reachability without authentication and report key presence only
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python3 - <<'PY'
+          import os, json
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+          report = {
+              'api_key_configured': bool(os.environ.get('OPENAI_API_KEY', '').strip()),
+              'api_host_reachable': False,
+              'authentication_sent': False,
+              'image_generation_performed': False,
+              'deployment_performed': False,
+              'billing_settings_changed': False,
+          }
+          try:
+              request = Request('https://api.openai.com/v1/models', headers={'User-Agent': 'Avenzo-Owner-Connectivity-Check/1.0'})
+              with urlopen(request, timeout=20) as response:
+                  report['http_status'] = response.status
+                  report['api_host_reachable'] = True
+          except HTTPError as error:
+              report['http_status'] = error.code
+              report['api_host_reachable'] = True
+          except URLError as error:
+              report['network_error_type'] = type(error.reason).__name__
+          print(json.dumps(report, indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+              summary.write('## Avenzo image API preflight\n\n')
+              summary.write('```json\n' + json.dumps(report, indent=2) + '\n```\n')
+          PY
