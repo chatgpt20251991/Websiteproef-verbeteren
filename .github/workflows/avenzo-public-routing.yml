@@ -1,0 +1,19 @@
+name: Public Avenzo domain routing
+on:
+  push:
+    paths: ['.github/workflows/avenzo-public-routing.yml']
+  workflow_dispatch:
+permissions: {}
+jobs:
+  public-dns:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Read public DNS records only, without authentication
+        run: |
+          for domain in avenzodigital.nl www.avenzodigital.nl web0171.zxcs.nl; do
+            for record in A AAAA CNAME NS MX; do
+              printf '\n%s %s\n' "$domain" "$record"
+              dig +time=2 +tries=1 +short "$domain" "$record"
+            done
+          done
