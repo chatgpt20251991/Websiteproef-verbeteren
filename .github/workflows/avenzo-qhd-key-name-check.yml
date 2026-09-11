@@ -1,0 +1,32 @@
+name: Avenzo QHD credential name check only
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-qhd-key-name-check.yml'
+  workflow_dispatch:
+permissions: {}
+jobs:
+  names-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Report only relevant key names and presence, never values
+        env:
+          CONFIGURED_SECRETS: ${{ toJSON(secrets) }}
+          CONFIGURED_VARIABLES: ${{ toJSON(vars) }}
+        run: |
+          python3 - <<'PY'
+          import json,os,re
+          def names(env):
+              values=json.loads(os.environ.get(env,'{}'))
+              out=[]
+              for name,value in values.items():
+                  if name=='github_token' or name.upper()=='GITHUB_TOKEN': continue
+                  if str(name).upper().startswith('SK_') or len(name)>80:
+                      out.append({'name':'[redacted unusual name]','nonempty':bool(value)});continue
+                  if any(t in name.upper() for t in ('OPENAI','API','AVENZO','GPT','IMAGE')):
+                      out.append({'name':name,'nonempty':bool(str(value).strip())})
+              return out
+          report={'secret_names':names('CONFIGURED_SECRETS'),'variable_names':names('CONFIGURED_VARIABLES'),'secret_values_disclosed':False,'api_calls':0,'deployment':False}
+          print(json.dumps(report))
+          PY
