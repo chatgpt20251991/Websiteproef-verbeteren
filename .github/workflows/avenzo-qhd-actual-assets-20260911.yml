@@ -1,0 +1,70 @@
+name: Avenzo QHD actual website assets, not page mockups
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-qhd-actual-assets-20260911.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: avenzo-qhd-image-delivery
+  cancel-in-progress: false
+jobs:
+  original-hero:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: avenzo-original-public-source-resolution-check
+          run-id: 34530730425
+          github-token: ${{ github.token }}
+          path: original-source
+      - name: Install the image transport and validation dependencies
+        run: python3 -m pip -q install requests==2.32.5 Pillow==11.3.0
+      - name: Generate only the original hero scene at 2560 by 1440
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python3 qhd-delivery-20260911/generate_asset.py --asset hero-desktop-apps --source original-source --output qhd-output
+      - name: Keep the generated image and safe provenance, no credentials
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-qhd-hero-desktop-apps
+          path: qhd-output/
+          retention-days: 14
+          if-no-files-found: warn
+  remaining-visuals:
+    needs: original-hero
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      max-parallel: 2
+      fail-fast: false
+      matrix:
+        asset: [hero-mobile-apps, service-web, service-ai, service-software, service-data, service-search, service-testing, software-closeup]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: avenzo-original-public-source-resolution-check
+          run-id: 34530730425
+          github-token: ${{ github.token }}
+          path: original-source
+      - name: Install the image transport and validation dependencies
+        run: python3 -m pip -q install requests==2.32.5 Pillow==11.3.0
+      - name: Generate the original-reference visual, never a page screenshot
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ASSET: ${{ matrix.asset }}
+        run: python3 qhd-delivery-20260911/generate_asset.py --asset "$ASSET" --source original-source --output qhd-output
+      - name: Keep the generated image and safe provenance, no credentials
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-qhd-${{ matrix.asset }}
+          path: qhd-output/
+          retention-days: 14
+          if-no-files-found: warn
