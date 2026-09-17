@@ -1,0 +1,503 @@
+name: Mulder mockups | GPT Image 2.5
+run-name: "Mulder: ${{ inputs.taak || 'Controle' }} / ${{ inputs.resolutie || '4K' }} / ${{ inputs.kwaliteit || 'max' }}"
+
+# This separate proof does NOT modify any existing Avenzo workflow or website.
+# Paid generation is manual only. Pushes on the proof branch perform zero-API checks.
+# API documentation checked on 2026-09-17:
+# https://developers.openai.com/api/docs/guides/image-generation
+# https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst
+on:
+  push:
+    branches: [codex/mulder-mockup-proef]
+    paths:
+      - .github/workflows/avenzo-mulder-mockups.yml
+      - mulder-referentie.png
+  workflow_dispatch:
+    inputs:
+      taak:
+        description: "Wat moet deze proef doen?"
+        type: choice
+        required: true
+        default: "Controle"
+        options:
+          - "Controle"
+          - "Desktop"
+          - "Mobiel"
+          - "Desktop en mobiel"
+      resolutie:
+        description: "4K is experimenteel; er wordt nooit opgeschaald"
+        type: choice
+        required: true
+        default: "4K"
+        options:
+          - "4K"
+          - "QHD"
+      kwaliteit:
+        description: "Beeldkwaliteit (hogere kwaliteit kan meer kosten)"
+        type: choice
+        required: true
+        default: "max"
+        options:
+          - "max"
+          - "xhigh"
+          - "high"
+      api_kosten_akkoord:
+        description: "Ik ga akkoord met API-kosten, maximaal 2 beeldverzoeken per start"
+        type: boolean
+        required: true
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: avenzo-mulder-mockup-proef
+  cancel-in-progress: false
+
+jobs:
+  mulder-proef:
+    name: Mulder referentiegetrouwe proef
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Lees repository (geen schrijfrechten)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Controleer of genereer met de goedgekeurde Mulder-referentie
+        env:
+          # Existing repository secret; do not paste a plaintext API key here.
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          MOCKUP_TAAK: ${{ inputs.taak || 'Controle' }}
+          MOCKUP_RESOLUTIE: ${{ inputs.resolutie || '4K' }}
+          MOCKUP_KWALITEIT: ${{ inputs.kwaliteit || 'max' }}
+          API_KOSTEN_AKKOORD: ${{ inputs.api_kosten_akkoord || false }}
+        shell: bash
+        run: |
+          python3 - <<'PYTHON'
+          """Manual, reference-led Mulder image proof. Standard library only.
+
+          The code never commits, deploys, sends mail or logs credentials. API calls are
+          made only after an explicit run input authorizes costs. No automatic retries.
+          """
+          from __future__ import annotations
+
+          import base64
+          import binascii
+          import hashlib
+          import html
+          import json
+          import os
+          from pathlib import Path
+          import re
+          import socket
+          import ssl
+          import struct
+          import sys
+          import time
+          import urllib.error
+          import urllib.request
+          import uuid
+          import zlib
+
+          MODEL = "gpt-image-2.5-sunburst"
+          ENDPOINT = "https://api.openai.com/v1/images/edits"
+          REFERENCE_NAME = "mulder-referentie.png"
+          REFERENCE_SHA256 = "327b76ead6cd4e00ad1ed77718efda6bfbf063c4eeb5d0fe5344b0767cffb3e6"
+          TASKS = {
+              "Controle": (),
+              "Desktop": ("desktop",),
+              "Mobiel": ("mobiel",),
+              "Desktop en mobiel": ("desktop", "mobiel"),
+          }
+          SIZES = {
+              "4K": {"desktop": "3840x2160", "mobiel": "1728x3840"},
+              "QHD": {"desktop": "2560x1440", "mobiel": "1152x2560"},
+          }
+          QUALITIES = {"high", "xhigh", "max"}
+          MAX_RESPONSE = 100 * 1024 * 1024
+          COMMON_PROMPT = """Create one finished, flat website design mockup for Mulder Kozijnen,
+          faithfully adapting the supplied approved reference. This is a constrained design
+          edit, NOT an invitation to redesign it in a generic template style.
+
+          Use the supplied image as the authoritative ART DIRECTION reference. The large
+          left panel is the desktop reference; the narrow right panel is the mobile
+          reference. The output must contain ONE webpage only, never both panels together.
+
+          PRESERVE: the enveloping dark photographic hero, warm architectural lighting,
+          realistic glazing reflections, subtle landscape shadows, dark charcoal and deep
+          forest tones, soft ivory/champagne buttons, restrained bronze accents, generous
+          but intentional spacing, and a strong mix of contemporary sans-serif type and
+          an elegant italic serif headline accent. Keep the house image dominant, not
+          confined to a small rectangular box beside a large empty block. Keep the Mulder
+          wordmark and thin roof motif treatment of this supplied concept. Do not replace
+          it with another mark, recolor everything blue/red, or invent a separate badge.
+
+          PRESENTATION: a perfectly front-facing, edge-to-edge UI artboard. No laptop,
+          phone chassis, bezel, notch, device shadow, browser chrome, status bar, desk,
+          plinth, presentation background, angled perspective, floating canvas or collage.
+          The image itself IS the webpage. Do not add a title outside the webpage.
+
+          CONTENT: keep concise, correct Dutch. Exact hero text:
+          'Geef uw woning' followed by 'een nieuwe uitstraling' in the elegant accent type.
+          Use the subtitle: 'Kozijnen, dakkapellen, schuifpuien en veranda\u2019s. Op maat voor uw woning.'
+          Primary action: 'Bekijk onze oplossingen'. Secondary: 'Plan een adviesgesprek'.
+          Four services: 'Kozijnen', 'Dakkapellen', 'Schuifpuien', 'Veranda\u2019s'.
+          Keep compact supporting labels 'Sinds 1986', 'Eigen productie', and 'Showroom in
+          Rotterdam'. Do not copy or invent customer totals, ratings, stars, testimonials,
+          telephone numbers, guarantees or response-time promises. Specifically remove
+          '1.000+', '35+', and 'meer dan 35 jaar' from the reference. Do not invent any
+          further company fact. Do not introduce a fake video or play button.
+          No em dashes or en dashes in website copy. Navigation arrows as functional icons
+          are allowed. No decorative handwritten slogans added to the photography.
+          Images are proposed atmosphere imagery, not evidence of completed Mulder projects;
+          use a small, legible 'Sfeerbeeld' label where appropriate.
+          If a lower section fits naturally, retain the heading 'Kwaliteit in elk detail',
+          a detailed architectural photograph, and a quiet action 'Meer over ons'. Use a
+          small footer note 'Onafhankelijk ontwerpconcept door Avenzo Digital'. Do not
+          squeeze the whole page into illegibly small type just to include more sections.
+
+          QUALITY BAR: crisp, aligned and consistently weighted icons; deliberate typographic
+          scale; readable buttons; natural architectural geometry; no random text; no
+          repeated headings caused by a collage; no giant empty blocks; no tiny image
+          thumbnails substituting for the rich photography of the approved design.
+          """
+          DESKTOP_PROMPT = """
+          OUTPUT: only the desktop webpage, with no mobile view anywhere in the image.
+          Use a wide desktop composition. The header sits inside the dark hero; navigation
+          is compact and horizontal. Hero copy is left aligned over a subtle dark
+          photographic gradient; the illuminated glazed house fills the right and extends
+          beneath the hero. Preserve the reference's integrated composition, not a white
+          split hero. Use the first roughly 58 to 64 percent of the canvas for header,
+          hero and compact credibility strip. Immediately below it, show four substantial
+          photographic service cards in one neat row, with concise labels and arrow icons.
+          The remaining area may reveal the opening of the lower detail section. This is
+          a top-of-page artboard, so a natural bottom crop is better than shrinking text.
+          """
+          MOBILE_PROMPT = """
+          OUTPUT: only the mobile webpage. Fill the entire tall canvas with the mobile UI.
+          Treat the canvas as a real 390 CSS-pixel-wide page export at higher pixel density.
+          It is NOT a phone photographed from outside. No bezel, notch, time, battery,
+          status icons, device frame or external background.
+
+          The mobile composition must be intentionally redesigned for the narrow viewport
+          while retaining the reference's sophisticated dark atmosphere. Place a compact
+          wordmark and menu at the top, an independently cropped warm architectural hero,
+          a generous but readable headline, one short paragraph, and comfortable
+          full-width actions. Roughly 20 to 24 CSS-pixel side gutters, 16 to 18 CSS-pixel
+          body copy and at least 48 CSS-pixel buttons. Never shrink the desktop navigation.
+          Keep a compact, legible set of three supporting labels, not an oversized block
+          of text. Under the hero, use substantial full-width or near-full-width image
+          cards stacked vertically. Photo texture and cinematic depth must remain clearly
+          visible, not become tiny thumbnails in a white list. Prioritize Kozijnen and
+          Dakkapellen; continue with Schuifpuien and Veranda\u2019s as the canvas permits.
+          A subtle bottom action 'Plan een adviesgesprek' is allowed only if it leaves
+          content unobscured. Do not cram an entire long website into a short phone screen.
+          """
+
+          class SafeFailure(Exception):
+              """An intentionally credential-free user-facing error."""
+
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  raise SafeFailure("API-redirect geweigerd; er is niets doorgestuurd.")
+
+
+          def png_dimensions(data: bytes) -> tuple[int, int]:
+              """Check PNG signature, chunk CRCs and basic structure without re-encoding."""
+              if not data.startswith(b"\x89PNG\r\n\x1a\n"):
+                  raise SafeFailure("Bestand is geen geldige PNG.")
+              pos = 8
+              dimensions = None
+              seen_idat = False
+              while pos + 12 <= len(data):
+                  length = struct.unpack(">I", data[pos:pos + 4])[0]
+                  kind = data[pos + 4:pos + 8]
+                  end = pos + 12 + length
+                  if end > len(data):
+                      raise SafeFailure("PNG is onvolledig.")
+                  payload = data[pos + 8:pos + 8 + length]
+                  checksum = struct.unpack(">I", data[pos + 8 + length:end])[0]
+                  if zlib.crc32(kind + payload) & 0xFFFFFFFF != checksum:
+                      raise SafeFailure("PNG-integriteitscontrole mislukt.")
+                  if dimensions is None:
+                      if kind != b"IHDR" or length != 13:
+                          raise SafeFailure("PNG-header ontbreekt.")
+                      dimensions = struct.unpack(">II", payload[:8])
+                      if min(dimensions) <= 0:
+                          raise SafeFailure("PNG heeft ongeldige afmetingen.")
+                  elif kind == b"IHDR":
+                      raise SafeFailure("PNG bevat meerdere headers.")
+                  if kind == b"IDAT":
+                      seen_idat = True
+                  if kind == b"IEND":
+                      if length != 0 or not seen_idat or end != len(data):
+                          raise SafeFailure("PNG-eindcontrole mislukt.")
+                      return dimensions
+                  pos = end
+              raise SafeFailure("PNG-einde ontbreekt.")
+
+
+          def validate_size(size: str) -> tuple[int, int]:
+              if not re.fullmatch(r"[0-9]+x[0-9]+", size):
+                  raise SafeFailure("Ongeldige resolutie.")
+              width, height = map(int, size.split("x"))
+              if (min(width, height) <= 0 or width % 16 or height % 16
+                      or max(width, height) > 3840
+                      or max(width, height) > 3 * min(width, height)
+                      or not 655360 <= width * height <= 8294400):
+                  raise SafeFailure("Resolutie valt buiten de modelgrenzen.")
+              return width, height
+
+
+          def make_multipart(fields: dict[str, str], image: bytes) -> tuple[bytes, str]:
+              boundary = "avenzo" + uuid.uuid4().hex
+              chunks = []
+              for name, value in fields.items():
+                  chunks.append((f"--{boundary}\r\nContent-Disposition: form-data; "
+                                 f'name="{name}"\r\n\r\n{value}\r\n').encode("utf-8"))
+              chunks.append((f"--{boundary}\r\nContent-Disposition: form-data; "
+                             'name="image[]"; filename="mulder-referentie.png"\r\n'
+                             'Content-Type: image/png\r\n\r\n').encode("ascii"))
+              chunks.extend([image, f"\r\n--{boundary}--\r\n".encode("ascii")])
+              return b"".join(chunks), f"multipart/form-data; boundary={boundary}"
+
+
+          def numeric_usage(value, depth: int = 0):
+              """Allow only numeric usage fields, never arbitrary API strings."""
+              if depth > 5:
+                  return None
+              if isinstance(value, bool):
+                  return None
+              if isinstance(value, (int, float)):
+                  return value if 0 <= value < 10**15 else None
+              if isinstance(value, dict):
+                  out = {}
+                  for key, item in value.items():
+                      if not isinstance(key, str) or not re.fullmatch(r"[a-z_]{1,50}", key):
+                          continue
+                      safe = numeric_usage(item, depth + 1)
+                      if safe is not None:
+                          out[key] = safe
+                  return out
+              return None
+
+
+          def request_image(key: str, fields: dict[str, str], reference: bytes):
+              body, content_type = make_multipart(fields, reference)
+              request = urllib.request.Request(
+                  ENDPOINT, data=body, method="POST",
+                  headers={"Authorization": "Bearer " + key,
+                           "Content-Type": content_type,
+                           "User-Agent": "Avenzo-Mulder-Proof/1.0"},
+              )
+              opener = urllib.request.build_opener(
+                  NoRedirect(), urllib.request.HTTPSHandler(context=ssl.create_default_context()))
+              try:
+                  # No retry: uncertain outcomes must not cause duplicate paid submissions.
+                  with opener.open(request, timeout=900) as response:
+                      raw = response.read(MAX_RESPONSE + 1)
+                      request_id = response.headers.get("x-request-id", "")
+                      if not re.fullmatch(r"[A-Za-z0-9_-]{1,120}", request_id):
+                          request_id = None
+              except urllib.error.HTTPError as exc:
+                  hints = {
+                      400: "Verzoek afgewezen. Controleer model, formaat of prompt. Geen automatische herhaling.",
+                      401: "AVIN2 wordt niet geaccepteerd. Controleer de opgeslagen OpenAI-sleutel.",
+                      403: "Toegang geweigerd. Controleer projectsleutel, modelrechten of organisatieverificatie.",
+                      404: "Model of endpoint niet beschikbaar voor dit verzoek. Er is geen ander model gekozen.",
+                      429: "Limiet of quotum bereikt. Controleer OpenAI-billing en rate limits voor een nieuwe start.",
+                  }
+                  hint = hints.get(exc.code, "API-fout. Controleer verbruik voordat u opnieuw start.")
+                  raise SafeFailure(f"HTTP {exc.code}: {hint}") from None
+              except (TimeoutError, socket.timeout, urllib.error.URLError):
+                  raise SafeFailure("Verbinding of wachttijd mislukt. Het verzoek kan al verwerkt zijn. "
+                                    "Controleer OpenAI-verbruik voor een nieuwe start; niet automatisch herhaald.") from None
+              if len(raw) > MAX_RESPONSE:
+                  raise SafeFailure("API-antwoord groter dan de veiligheidslimiet; niet automatisch herhaald.")
+              try:
+                  payload = json.loads(raw)
+              except (ValueError, UnicodeError):
+                  raise SafeFailure("API gaf geen leesbaar JSON-antwoord; niet automatisch herhaald.") from None
+              if not isinstance(payload, dict):
+                  raise SafeFailure("Onverwachte API-antwoordstructuur.")
+              data = payload.get("data")
+              if not isinstance(data, list) or len(data) != 1 or not isinstance(data[0], dict):
+                  raise SafeFailure("Niet precies een afbeelding ontvangen. Geen automatische herhaling.")
+              encoded = data[0].get("b64_json")
+              if not isinstance(encoded, str):
+                  raise SafeFailure("PNG ontbreekt in API-antwoord. Externe download-URLs worden niet gevolgd.")
+              try:
+                  image = base64.b64decode(encoded, validate=True)
+              except (ValueError, binascii.Error):
+                  raise SafeFailure("Ongeldige afbeeldingsdata ontvangen.") from None
+              usage = numeric_usage(payload.get("usage")) or {}
+              return image, {"request_id": request_id, "usage": usage}
+
+
+          def write_preview(output: Path, report: dict) -> None:
+              blocks = []
+              for result in report["results"]:
+                  name = result.get("filename")
+                  if name and (output / name).is_file():
+                      safe = html.escape(name, quote=True)
+                      title = html.escape(result["view"].capitalize())
+                      blocks.append(f'<section><h2>{title}</h2><a href="{safe}">Open origineel</a>'
+                                    f'<img src="{safe}" alt="Mulder {title} mockup"></section>')
+              error = html.escape(report.get("error", ""))
+              content = "".join(blocks) or "<p>Er zijn nog geen afbeeldingen gegenereerd.</p>"
+              page = ('<!doctype html><html lang="nl"><meta charset="utf-8">'
+                      '<meta name="viewport" content="width=device-width,initial-scale=1">'
+                      '<title>Mulder ontwerpcontrole | Avenzo Digital</title>'
+                      '<style>body{font:16px system-ui;margin:0;padding:32px;background:#f4f3ee;color:#142420}'
+                      'main{max-width:1500px;margin:auto}section{margin:40px 0}img{display:block;max-width:100%;'
+                      'height:auto;margin-top:20px}a{color:inherit}p{max-width:75ch;line-height:1.6}</style>'
+                      '<main><h1>Mulder ontwerpcontrole</h1>'
+                      '<p>Onafhankelijk ontwerpconcept door Avenzo Digital. Sfeerbeelden ter illustratie. '
+                      'Dit zijn beeldmockups, geen werkende websites. Controleer vormgeving, spelling, '
+                      'merkgebruik en bedrijfsclaims voordat u iets verstuurt.</p>'
+                      f'<p>{error}</p>{content}</main></html>')
+              (output / "bekijken.html").write_text(page, encoding="utf-8")
+
+
+          def run() -> int:
+              output = Path(os.environ.get("RUNNER_TEMP", ".")) / "mulder-mockup-resultaat"
+              if output.is_symlink():
+                  print("::error::Onveilige uitvoermap.")
+                  return 1
+              output.mkdir(parents=True, exist_ok=False)
+              report = {
+                  "model_requested": MODEL,
+                  "endpoint": ENDPOINT,
+                  "status": "started",
+                  "requests_submitted": 0,
+                  "results": [],
+                  "automatic_retries": False,
+                  "rescaling_applied": False,
+                  "visual_review": "pending",
+              }
+              code = 0
+              try:
+                  mode = os.environ.get("MOCKUP_TAAK", "Controle")
+                  resolution = os.environ.get("MOCKUP_RESOLUTIE", "4K")
+                  quality = os.environ.get("MOCKUP_KWALITEIT", "max")
+                  consent = os.environ.get("API_KOSTEN_AKKOORD", "false") == "true"
+                  if mode not in TASKS or resolution not in SIZES or quality not in QUALITIES:
+                      raise SafeFailure("Ongeldige workflowkeuze.")
+                  views = TASKS[mode]
+                  if views and (os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch"
+                                or os.environ.get("GITHUB_RUN_ATTEMPT") != "1"):
+                      raise SafeFailure("Generatie vereist een nieuwe handmatige start; heruitvoeren is geblokkeerd.")
+                  if views and not consent:
+                      raise SafeFailure("Geen kostenakkoord. Er is geen API-verzoek verstuurd.")
+                  report.update(task=mode, resolution=resolution, quality=quality)
+                  source = Path(REFERENCE_NAME)
+                  if source.is_symlink() or not source.is_file():
+                      raise SafeFailure("Upload mulder-referentie.png in de hoofdmap van deze repository.")
+                  reference = source.read_bytes()
+                  sha = hashlib.sha256(reference).hexdigest()
+                  if sha != REFERENCE_SHA256:
+                      raise SafeFailure("Referentie komt niet overeen met het goedgekeurde bestand. "
+                                        "Gebruik de meegeleverde mulder-referentie.png, zonder bewerking.")
+                  report["reference_sha256"] = sha
+                  report["reference_dimensions"] = list(png_dimensions(reference))
+                  report["run_id"] = os.environ.get("GITHUB_RUN_ID")
+                  report["commit_sha"] = os.environ.get("GITHUB_SHA")
+                  report["prepared_requests"] = []
+                  for view in ("desktop", "mobiel"):
+                      prompt = COMMON_PROMPT + (DESKTOP_PROMPT if view == "desktop" else MOBILE_PROMPT)
+                      (output / f"opdracht-{view}.txt").write_text(prompt, encoding="utf-8")
+                      report["prepared_requests"].append({"view": view, "size": SIZES[resolution][view],
+                                                          "quality": quality, "n": 1})
+                  key = os.environ.get("OPENAI_API_KEY", "").strip()
+                  report["secret_present"] = bool(key)
+                  if not key:
+                      raise SafeFailure("AVIN2 ontbreekt of is leeg. Controleer de repositorysecret.")
+                  for size in SIZES[resolution].values():
+                      validate_size(size)
+                  if not views:
+                      report["status"] = "local_checks_passed"
+                      print("Bestand, referentie en aanwezigheid van AVIN2 gecontroleerd. Geen API-aanroep gedaan.")
+                      print("Geldigheid, modeltoegang en saldo zijn nog niet getest.")
+                      return 0
+                  print(f"Start {len(views)} beeldverzoek(en) aan {MODEL}; kwaliteit {quality}. "
+                        "Geen automatische retries, websitepublicatie of e-mails.")
+                  if resolution == "4K":
+                      print("Resoluties boven QHD zijn volgens OpenAI experimenteel. Geen fallback of upscale.")
+                  for view in views:
+                      size = SIZES[resolution][view]
+                      expected = validate_size(size)
+                      prompt = COMMON_PROMPT + (DESKTOP_PROMPT if view == "desktop" else MOBILE_PROMPT)
+                      (output / f"opdracht-{view}.txt").write_text(prompt, encoding="utf-8")
+                      fields = {"model": MODEL, "prompt": prompt, "n": "1", "size": size,
+                                "quality": quality, "output_format": "png", "background": "opaque"}
+                      result = {"view": view, "size_requested": size, "status": "submitted"}
+                      report["results"].append(result)
+                      report["requests_submitted"] += 1
+                      started = time.monotonic()
+                      print(f"Genereren: {view}, {size}.", flush=True)
+                      image, metadata = request_image(key, fields, reference)
+                      result.update(metadata)
+                      actual = png_dimensions(image)
+                      result["dimensions_received"] = list(actual)
+                      result["duration_seconds"] = round(time.monotonic() - started, 2)
+                      if actual != expected:
+                          filename = f"mulder-{view}-afwijkende-resolutie.png"
+                          (output / filename).write_bytes(image)
+                          result.update(filename=filename, status="dimension_mismatch")
+                          raise SafeFailure("API leverde andere afmetingen. Origineel bewaard voor controle; "
+                                            "niet opgeschaald en geen volgend verzoek verstuurd.")
+                      filename = f"mulder-{view}.png"
+                      (output / filename).write_bytes(image)
+                      result.update(filename=filename, status="image_received_pending_review",
+                                    sha256=hashlib.sha256(image).hexdigest())
+                      print(f"Ontvangen: {filename}, {actual[0]} x {actual[1]}. Visuele controle blijft nodig.")
+                  report["status"] = "images_received_pending_visual_review"
+              except SafeFailure as exc:
+                  report["status"] = "stopped"
+                  report["error"] = str(exc)
+                  print("::error::" + str(exc))
+                  code = 1
+              except Exception:
+                  report["status"] = "stopped"
+                  report["error"] = ("Onverwachte technische fout. Geen foutobject of geheime data gelogd. "
+                                     "Controleer verbruik voordat u opnieuw start.")
+                  print("::error::" + report["error"])
+                  code = 1
+              finally:
+                  (output / "run-report.json").write_text(
+                      json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False), encoding="utf-8")
+                  write_preview(output, report)
+                  summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+                  if summary_path:
+                      text = ("## Mulder proef\n\n"
+                              f"Status: `{report['status']}`\n\n"
+                              f"Beeldverzoeken verstuurd: **{report['requests_submitted']}**. "
+                              "Geen automatische retries.\n\n"
+                              "Bekijk het artifact `mulder-mockups` onderaan deze run. "
+                              "Download en pak het uit; open `bekijken.html` of de losse PNG-bestanden.\n\n"
+                              "Deze controle is geen beoordeling van de visuele kwaliteit. "
+                              "Er is geen website gepubliceerd en geen mail verstuurd.\n")
+                      if report.get("error"):
+                          text += "\nStopreden: " + report["error"] + "\n"
+                      with open(summary_path, "a", encoding="utf-8") as handle:
+                          handle.write(text)
+              return code
+
+
+          if __name__ == "__main__":
+              sys.exit(run())
+          PYTHON
+
+      - name: Bewaar alleen afbeeldingen, opdrachten en veilig verslag
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mulder-mockups
+          path: ${{ runner.temp }}/mulder-mockup-resultaat/
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 0
+          include-hidden-files: false
