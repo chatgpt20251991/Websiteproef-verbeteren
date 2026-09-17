@@ -97,4 +97,3 @@ De productiecode gebruikt uitsluitend de Python-standaardbibliotheek.
 De meegeleverde claim van 29 geslaagde tests is niet als bewijs overgenomen.
 De installatie heeft een eigen controle uitgevoerd. Zie het afzonderlijke
 opleverrapport voor werkelijk uitgevoerde tests, GitHub-run en openstaande stappen.
-
