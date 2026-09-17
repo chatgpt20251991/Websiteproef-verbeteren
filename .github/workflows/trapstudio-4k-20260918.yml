@@ -33,7 +33,7 @@ jobs:
           PY
       - name: Produce six actual 3840x2160 API source images
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
           PYTHONUNBUFFERED: '1'
         run: python trapstudio-4k/render.py
       - name: Preserve original images and request metadata, even on partial failure
