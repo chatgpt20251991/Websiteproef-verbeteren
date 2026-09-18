@@ -1,0 +1,87 @@
+name: Avenzo native Sunburst 4K assets
+run-name: Avenzo Sunburst 2.5 | nine native 4K assets | max quality
+
+# The owner requested these nine images using the existing AVIN2 setup.
+# Only a change to this exact workflow, or an explicit dispatch, starts generation.
+# No deploy step; returned images still require visual review and website assembly.
+on:
+  push:
+    paths:
+      - '.github/workflows/avenzo-sunburst-4k-20260918.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: avenzo-sunburst-native-4k-20260918
+  cancel-in-progress: false
+
+jobs:
+  hero:
+    name: Native 4K desktop hero
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Read repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install image transport and validation dependencies
+        run: python3 -m pip --disable-pip-version-check install requests==2.32.5 Pillow==11.3.0
+      - name: Generate one exact native desktop hero
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sunburst-4k-20260918/generate_asset.py --asset hero-desktop-apps --output sunburst-output
+      - name: Preserve image and safe provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: avenzo-sunburst-4k-hero-desktop-apps
+          path: sunburst-output/
+          retention-days: 14
+          compression-level: 0
+          if-no-files-found: warn
+          include-hidden-files: false
+
+  remaining:
+    name: Native 4K ${{ matrix.asset }}
+    needs: hero
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        asset:
+          - hero-mobile-apps
+          - service-web
+          - service-ai
+          - service-software
+          - service-data
+          - service-search
+          - service-testing
+          - software-closeup
+    steps:
+      - name: Read repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install image transport and validation dependencies
+        run: python3 -m pip --disable-pip-version-check install requests==2.32.5 Pillow==11.3.0
+      - name: Generate one exact native reference-led image
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          ASSET: ${{ matrix.asset }}
+        run: python3 sunburst-4k-20260918/generate_asset.py --asset "$ASSET" --output sunburst-output
+      - name: Preserve image and safe provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: avenzo-sunburst-4k-${{ matrix.asset }}
+          path: sunburst-output/
+          retention-days: 14
+          compression-level: 0
+          if-no-files-found: warn
+          include-hidden-files: false
+
