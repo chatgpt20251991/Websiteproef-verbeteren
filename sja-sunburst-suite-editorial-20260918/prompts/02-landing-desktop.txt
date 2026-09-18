@@ -1,0 +1,59 @@
+DESIGN A NEW WEBSITE, not a recolor or rearrangement of a previous landing page. One complete flat desktop webpage at 2160 x3840 native pixels.
+Only one attached reference: the NEW learning-dashboard brand master. Take its full startjouwautobedrijf.nl logo, deep petrol / porcelain / champagne palette and typography quality. That reference is a PRODUCT APP, so do not copy its app layout into this marketing page. The reference is for brand identity and for the small learning-platform preview only.
+
+The owner asks for a radically different contemporary 2026 statement layout, extraordinary graphics, real atmosphere and premium craft. They prefer the Dutch message "Van ambitie tot autobedrijf. En alles wat daarna komt." We are intentionally BREAKING with the common hero of text on the left and a car on the right. That arrangement is prohibited. A left-copy/right-car hero or left-copy/right-laptop second section is a failed result.
+
+ART DIRECTION:
+An extraordinarily beautiful contemporary automotive journal / architectural studio. Bright warm porcelain, very dark petrol, restrained champagne details, incredible typography, documentary-believable automotive material and sunlight. Large modern sans-serif for the hero, no old gold serif headline. Precision spacing, strong editorial grid, clear readability, bold contrasting scale. A distinctive fine champagne route line traverses the sections at carefully chosen points. Graphics should feel bespoke and well composed; no random blobs or gradients.
+Luxury is typography, composition, lighting, physical detail and quiet confidence. A warm human ambition, not billionaire fantasy. One premium attainable graphite car, not a parade of supercars.
+No fake testimonials, star ratings, student counts, earnings, certificates, partners, scarcity or guarantees. No fake instructor. No slogans on walls, objects, photos or empty corners.
+
+MANDATORY SPATIAL COMPOSITION — THE FIRST 45% OF THE PAGE:
+1. A slim PORCELAIN header across full width with the exact NEW two-tone automotive logo from the attached dashboard, full .nl. Logo at left; a few quiet links; primary button at right.
+2. A pure typographic HERO occupying the FULL WIDTH on plain porcelain. CENTER-ALIGNED. No image behind the text, no split, no column beside it. Place small label "DE ONLINE OPLEIDING VOOR AUTO-ONDERNEMERS". Then an exceptionally composed HUGE modern grotesk headline across TWO centered lines:
+"Van ambitie"
+"tot autobedrijf."
+This headline spans nearly the full usable width with generous side margins and optical kerning. Deep petrol; one subtle champagne emphasis is allowed. Below it, centered smaller "En alles wat daarna komt."
+3. Directly BELOW this typographic opening, a single spectacular WIDE PANORAMIC photographic strip going edge-to-edge. The same graphite car seen from a clean SIDE PROFILE or wide front-three-quarter profile sits centrally in a beautiful modern concrete/glass atelier with raking daylight. This image has NO overlaid headline and NO text column over its left half. View feels like a carefully photographed automotive magazine spread; sophisticated, real, tactile. Light on paint, stone, matte concrete, perfect believable reflections.
+4. BELOW the photographic strip, a generous CENTERED action/offer band on porcelain:
+"Leer professioneel inkopen, risico’s herkennen en winstgevend verkopen."
+Primary "Krijg volledige toegang"; secondary "Bekijk de gratis les".
+"€289 excl. btw · eenmalig"
+A refined factual line "42 modules · 325 lesonderdelen · 10 jaar praktijkervaring".
+This hero sequence — full-width typography, full-width image, centered actions — MUST be unmistakable at thumbnail size.
+
+THE NEXT SECTION:
+A dark petrol editorial FEATURE, with headline centered at its top:
+"Geen losse tips."
+"Een compleet systeem."
+Under it, a LARGE STRAIGHT-ON BORDERLESS crop of the actual new dashboard master attached to this prompt, beautifully inset within the feature. It is a UI preview, not a giant angled laptop, not a stack of devices. Keep the new dashboard recognizable. Label "Jouw leeromgeving". This is a proposed design, do not label it as actual current live screen.
+Under the screen: a restrained caption and free-lesson link: "42 modules, stap voor stap." / "Bekijk de gratis les".
+Avoid copying the layout of the previous screenshot; this full-width centered dark feature is the product statement.
+
+THEN AN ASYMMETRICAL EDITORIAL CURRICULUM on porcelain:
+"Van eerste inkoop tot professioneel autobedrijf."
+Three themes within42modules, designed as THREE HORIZONTAL NUMBERED ROWS, not three equal cards or columns.
+Each row has a huge understated number, clear title and one short line of explanation. Alternate one narrow gorgeous automotive macro crop at the far end or in a shared graphic margin; integrate the fine route line.
+"01 Inkopen met inzicht" — "Aanbod beoordelen, risico’s herkennen en onderhandelen."
+"02 Verkopen met vertrouwen" — "Presentatie, klantcontact en een professioneel verkoopproces."
+"03 Ondernemen met structuur" — "Bedrijfsopzet, marges, administratie en groei."
+The arrangement should have a distinctive editorial silhouette and luxurious breathing space.
+
+FINAL OFFER AND FOOTER:
+A beautifully restrained, centered deep-petrol offer band. No car rear-photo split and no giant generic price card.
+"Jouw volgende stap begint hier."
+"Volledige toegang"
+"€289" + clearly readable "excl. btw"
+"Eenmalige betaling · 6 maanden toegang"
+"Alle42 modules · 325lesonderdelen · Leren op jouw tempo"
+"Krijg volledige toegang"
+"Geen automatische verlenging."
+Then clean compact FAQ on porcelain, preferably full-width stacked rows, headline "Goed om te weten."
+"Kan ik beginnen zonder ervaring?"
+"Is dit ook voor bestaande autohandelaren?"
+"Hoelang heb ik toegang?"
+Optional open answer "Je krijgt zes maanden toegang en leert op je eigen tempo."
+Complete quiet footer: exact new logo, info@startjouwautobedrijf.nl, Voorwaarden, Privacy, ©2026.
+
+CRAFT:
+Choose fewer beautifully set words over cramped microtext. Exact spelling and €289excl.btw only, neveranotherprice. All contents through the footer must fit comfortably. The total canvas is2160x3840, so balance the vertical proportions: hero sequence around38%, productfeature23%, curriculum18%, offer14%, FAQ/footer7%, adjusted for legibility. The overall look must be 2026 editorial, an ORIGINAL beautiful website, not a template. Faithfully follow the required hero geometry before embellishing. Make the photography, typography, line graphic, UI preview, buttons and white space feel like one exceptional identity. Deliver only the complete flat webpage image.

@@ -1,0 +1,19 @@
+Create the SECOND SCROLL SEGMENT of the SAME MOBILE landing page as attached mobile-top and desktop references. Native1280x3840, true390CSSpxwide layout at high resolution, comfortable16CSSpx body text and48CSSpx touch targets. Copy the exact new .nl logo, color system, typography, line graphic and spacing. No phone/browser shell.
+This segment starts immediately AFTER the dark product-preview feature in mobile-top. Do not repeat the hero or introduce a new full top nav.
+Begin on porcelain: "Van eerste inkoop tot professioneel autobedrijf." and "Drie thema’s binnen42modules".
+Stack the same editorial numbered themes as the desktop:
+"01 Inkopen met inzicht" / "Aanbod beoordelen, risico’s herkennen en onderhandelen."
+"02 Verkopen met vertrouwen" / "Presentatie, klantcontact en een professioneel verkoopproces."
+"03 Ondernemen met structuur" / "Bedrijfsopzet, marges, administratie en groei."
+No three-column grid. Use the same delicate route line and a small amount of beautiful automotive macroimagery, with generous space, clear hierarchy, designed typography and high photographic craft.
+Then the same dark-petrol centered offer fromdesktop, gracefully reflowed:
+"Jouw volgende stap begint hier."
+"Volledige toegang"
+"€289" + "excl. btw".
+"Eenmalige betaling ·6 maanden toegang"
+"Alle42modules" / "325lesonderdelen" / "Leren op jouw tempo".
+"Krijg volledige toegang".
+"Geen automatische verlenging."
+FAQ onporcelain: "Goed om te weten." plus "Kan ik beginnen zonder ervaring?", "Is dit ook voor bestaande autohandelaren?", "Hoelang heb ik toegang?" Openanswer"Je krijgt zes maanden toegang en leert op je eigen tempo."
+Completefooter exactnewtwo-tonelogo ending.nl, info@startjouwautobedrijf.nl, Voorwaarden,Privacy,©2026.
+Perfect correctly spacedDutch typography, no newclaims, no fake endorsements, no inconsistent logo. Fill the tall mobilecanvas witha natural comfortable reading flow through the real footer. Deliver one finished flat screen.
