@@ -1,0 +1,25 @@
+Create ONE exceptional, finished desktop landing-page mockup for the Dutch professional car-trading course "Start Jouw Autobedrijf". Output a single tall website screenshot, portrait 2:3 canvas, front-on flat UI, sharp readable Dutch typography. This is a STATIC VISUAL CONCEPT, not a picture of a laptop and not a moodboard. Design the actual complete composition from the navigation through hero and first curriculum section to a considered closing enrollment panel.
+
+You are free to originate a new, coherent premium visual identity. The character is the quiet confidence and impeccable finish of first-class aviation hospitality translated into a serious automotive education brand. Make it feel distinctive and meticulously typeset, with beautiful visual rhythm and an editorial layout. Avoid generic online-course templates and timid blocks of default rounded cards.
+
+BRAND AND LOGO: the name in the navigation is exactly "startjouwautobedrijf.nl", all lowercase, on one line. Design a refined custom wordmark with a SMALL, convincingly automotive top-view car integrated into the o of "auto". The logo should read effortlessly. No SJA initials, no shields, crests, wings, padlock/mouse-like icon or detached generic clip-art car. Put two sophisticated, clearly distinct COLORS IN THE LETTERS THEMSELVES: "startjouw" in one color and "autobedrijf.nl" in a second color. You choose the best harmonious palette for your complete design; do not color every word differently. Both parts must be legible. Wordmark is a considered brand signature, not the huge hero headline.
+
+ART DIRECTION: architecturally composed premium automotive showroom, refined light, a beautiful unbranded graphite grand-touring car photographed with real material detail and spatial depth. Visually relate this to professional automotive BUSINESS, not a supercar giveaway or a car-sales listing. Design a striking hero combining bold asymmetric typographic hierarchy, confident negative space and cinematic photography. Give the page one memorable visual move: a carefully framed showroom image that intersects or aligns with the hero's editorial grid. Warm off-white space, deep ink typography and a sparingly used confident brand accent can work beautifully, but the final cohesive palette is your creative decision. The logo lettering must visibly contain two colors. Subtle rules, beautiful spacing and precise type should carry the premium impression. No chrome-gradient logos, bevels, gold confetti, excessive shadows, neon glows or generic blue-purple SaaS gradients.
+
+Use the following Dutch copy accurately, including the actual price:
+Navigation: "De opleiding" / "Inhoud" / "Veelgestelde vragen" / "Inloggen"
+Small introductory label: "VOOR STARTERS EN AUTOHANDELAREN"
+Hero headline, in expressive large typography: "Bouw aan een professioneel autobedrijf."
+Supporting copy: "Leer professioneel inkopen, risico's herkennen en winstgevend verkopen. Een complete opleiding voor starters en bestaande autohandelaren."
+Primary CTA: "Bekijk de opleiding"
+Secondary link: "Ontdek de 42 modules"
+Price: "€289 excl. btw"
+Factual course anchor: "42 uitgebreide modules"
+Curriculum title: "Van eerste inkoop tot professioneel autobedrijf."
+Show three beautifully typeset numbered curriculum themes, elegantly editorial instead of chunky icon cards:
+01 "Slim inkopen" — "Herken kansen en beoordeel risico's."
+02 "Sterker verkopen" — "Onderhandel met vertrouwen en verkoop professioneel."
+03 "Professioneel ondernemen" — "Werk juridisch correct en bouw aan je bedrijf."
+Closing compact enrollment section: "Zet de volgende stap." with "€289 excl. btw" and "Bekijk de opleiding".
+
+Important factual boundaries: this is an online education product about buying, assessing risk, selling and operating a dealership. Do not invent reviews, ratings, certifications, student numbers, testimonials, video lesson counts, earnings, sales results, partner/car-brand logos, urgency, discounts or guarantees. No 1990s styling. No lorem ipsum, English UI labels, alternative concepts, color swatches, presentation headings or browser chrome. One persuasive coherent premium page with an original logo, legible Dutch copy and a clear enrollment journey.

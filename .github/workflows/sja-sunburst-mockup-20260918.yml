@@ -1,0 +1,45 @@
+name: Start Jouw Autobedrijf Sunburst mockup
+run-name: One Start Jouw Autobedrijf mockup with logo | Sunburst 2.5
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sja-sunburst-mockup-20260918.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sja-sunburst-mockup-20260918
+  cancel-in-progress: false
+jobs:
+  mockup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Read generation brief
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install image CLI dependencies
+        run: python3 -m pip --disable-pip-version-check install openai==3.16.1 Pillow==11.3.0
+      - name: Generate one mockup using existing API connection
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: >-
+          python3 sja-sunburst-mockup-20260918/image_gen.py generate
+          --model gpt-image-2.5-sunburst
+          --prompt-file sja-sunburst-mockup-20260918/prompt.txt
+          --size auto --quality high --n 1 --background opaque
+          --output-format png --no-augment
+          --out sunburst-output/startjouwautobedrijf-mockup.png
+      - name: Verify original and record request settings
+        run: python3 sja-sunburst-mockup-20260918/verify_output.py
+      - name: Keep mockup and brief for download
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: startjouwautobedrijf-sunburst-mockup
+          path: sunburst-output/
+          retention-days: 14
+          compression-level: 0
+          if-no-files-found: error
+          include-hidden-files: false
