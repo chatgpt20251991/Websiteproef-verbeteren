@@ -1,0 +1,62 @@
+name: TrapStudio Atelier complete remaining variants
+on:
+  push:
+    branches: ['trapstudio-atelier-20260918']
+    paths: ['.github/workflows/trapstudio-atelier-continue-20260918.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: trapstudio-atelier-images
+  cancel-in-progress: false
+jobs:
+  complete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'requests==2.32.5' 'Pillow==11.3.0'
+      - uses: actions/download-artifact@v4
+        with:
+          name: trapstudio-atelier-complete-35293833265
+          path: trapstudio-max-output
+          run-id: 35293833265
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: trapstudio-4k-originals-35285071947
+          path: existing-4k
+          run-id: 35285071947
+          github-token: ${{ github.token }}
+      - name: Record existing successful outputs for deduplication
+        run: cp trapstudio-max-output/manifest.json initial-manifest.json
+      - name: Complete only missing variants at a lower request rate
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          PYTHONUNBUFFERED: '1'
+          TRAPSTUDIO_CONCURRENCY: '1'
+        run: python trapstudio-max-generation/render.py variants
+      - name: Collect new originals, cumulative cost and diagnostic records
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,shutil
+          from pathlib import Path
+          old=json.loads(Path('initial-manifest.json').read_text())
+          p=Path('trapstudio-max-output');d=Path('continuation');d.mkdir(exist_ok=True)
+          for f in p.glob('*.json'): shutil.copy2(f,d/f.name)
+          for f in p.glob('*.png'):
+              if f.stem not in old: shutil.copy2(f,d/f.name)
+          print((p/'completion-variants.json').read_text())
+          for f in p.glob('*-api-error.json'): print(f.name,f.read_text())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atelier-continuation-${{ github.run_id }}
+          path: continuation/
+          retention-days: 90
+          compression-level: 0

@@ -47,7 +47,12 @@ def request(job):
         else:
             response=requests.post('https://api.openai.com/v1/images/'+endpoint,headers=headers,json=fields,timeout=(30,780))
         rid=response.headers.get('x-request-id') or response.headers.get('openai-request-id')
-        if not response.ok: raise RuntimeError('HTTP '+str(response.status_code)+'; request '+str(rid))
+        if not response.ok:
+            try:
+                err=response.json().get('error',{})
+            except Exception: err={}
+            write(id+'-api-error.json',dict(status=response.status_code,requestId=rid,code=err.get('code'),type=err.get('type'),message=str(err.get('message',''))[:700]))
+            raise RuntimeError('HTTP '+str(response.status_code)+'; request '+str(rid)+'; code '+str(err.get('code')))
         payload=response.json(); usd=cost(payload.get('usage'))
         with LOCK:
             LEDGER['estimatedUSD']+=usd
@@ -80,12 +85,13 @@ def main():
     phase=sys.argv[1] if len(sys.argv)>1 else 'all'
     pending=[j for j in PLAN['jobs'] if j['id'] not in MANIFEST and (phase=='all' or (phase=='masters' and not j['parent']) or (phase=='variants' and j['parent']))]
     failure=[]; reserved=0
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    workers=int(os.environ.get('TRAPSTUDIO_CONCURRENCY','4'))
+    with ThreadPoolExecutor(max_workers=workers) as pool:
         running={}
         while pending or running:
             for j in list(pending):
                 parent=j['parent'];ready=not parent or parent.startswith('existing:') or parent in MANIFEST
-                if failure or len(running)>=4: break
+                if failure or len(running)>=workers: break
                 if not ready: continue
                 if LEDGER['estimatedUSD']+reserved+PLAN['reserveUSDPerInFlightRequest']>PLAN['usdSpendCeiling']: continue
                 pending.remove(j);reserved+=PLAN['reserveUSDPerInFlightRequest'];running[pool.submit(request,j)]=j['id']
