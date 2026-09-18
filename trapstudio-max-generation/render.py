@@ -56,13 +56,14 @@ def request(job):
         payload=response.json(); usd=cost(payload.get('usage'))
         with LOCK:
             LEDGER['estimatedUSD']+=usd
-            entry=next(x for x in LEDGER['entries'] if x['id']==id)
+            entry=next(x for x in LEDGER['entries'] if x['clientRequestId']==client)
             entry.update(state='received',estimatedUSD=usd,requestId=rid)
             write('cost-ledger.json',LEDGER)
         raw=base64.b64decode(payload['data'][0]['b64_json'],validate=True)
         (OUT/(id+'.png')).write_bytes(raw)
         im=Image.open(io.BytesIO(raw));im.load()
         meta=dict(ok=im.size==(3840,2160) and im.format=='PNG' and bool(rid),asset=id,source='OpenAI Images API',endpoint='/v1/images/'+endpoint,requestedModel=PLAN['model'],responseModel=payload.get('model'),requestedSize=PLAN['size'],actualWidth=im.width,actualHeight=im.height,requestedQuality=PLAN['quality'],responseQuality=payload.get('quality'),format=im.format,openaiRequestId=rid,clientRequestId=client,sha256=digest(raw),bytes=len(raw),parentSha256=digest(rawref) if rawref else None,parentAsset=parent,upscaled=False,usage=payload.get('usage'),estimatedUSD=usd,prompt=job['prompt'],startedAt=started,completedAt=now())
+        meta['workflowRunId']=int(os.environ['GITHUB_RUN_ID']) if os.environ.get('GITHUB_RUN_ID') else None
         write(id+'.json',meta)
         if not meta['ok']: raise RuntimeError('4K source verification failed')
         if usd>PLAN['reserveUSDPerInFlightRequest']: raise RuntimeError('Request exceeded conservative cost reservation; stopping batch')

@@ -1,0 +1,95 @@
+name: TrapStudio Atelier finish twenty native 4K variants
+on:
+  push:
+    branches: ['trapstudio-atelier-20260918']
+    paths: ['.github/workflows/trapstudio-atelier-finish-20260918.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: trapstudio-atelier-images
+  cancel-in-progress: false
+jobs:
+  complete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'requests==2.32.5' 'Pillow==11.3.0'
+      - name: Restore all forty-eight successful new originals
+        uses: actions/download-artifact@v4
+        with:
+          name: trapstudio-atelier-complete-35293833265
+          path: trapstudio-max-output
+          run-id: 35293833265
+          github-token: ${{ github.token }}
+      - name: Restore the latest cumulative cost and attempt ledger
+        uses: actions/download-artifact@v4
+        with:
+          name: atelier-continuation-35295434786
+          path: trapstudio-max-output
+          run-id: 35295434786
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: trapstudio-4k-originals-35285071947
+          path: existing-4k
+          run-id: 35285071947
+          github-token: ${{ github.token }}
+      - name: Verify originals, deduplication and remaining budget before paid requests
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          from PIL import Image
+          out=Path('trapstudio-max-output')
+          original=Path('existing-4k')
+          manifest=json.loads((out/'manifest.json').read_text())
+          old=json.loads((original/'manifest.json').read_text())
+          ledger=json.loads((out/'cost-ledger.json').read_text())
+          plan=json.loads(Path('trapstudio-max-generation/plan.json').read_text())
+          assert len(manifest)==48 and len(old)==6
+          assert ledger['attempted']==51 and abs(ledger['estimatedUSD']-19.639528)<0.000001
+          assert plan['usdSpendCeiling']==30 and plan['maxPaidRequests']==71
+          for folder,records in [(out,manifest),(original,old)]:
+              for key,record in records.items():
+                  p=folder/(key+'.png')
+                  assert hashlib.sha256(p.read_bytes()).hexdigest()==record['sha256']
+                  assert Image.open(p).size==(3840,2160)
+          pending=[j for j in plan['jobs'] if j['id'] not in manifest]
+          assert len(pending)==20 and all(j['parent'] for j in pending)
+          Path('initial-manifest.json').write_text(json.dumps(manifest))
+          print('Verified 54 originals. Exactly 20 missing native 4K images will be requested.')
+          PY
+      - name: Complete missing variants after the user replenished credits
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          PYTHONUNBUFFERED: '1'
+          TRAPSTUDIO_CONCURRENCY: '2'
+        run: python trapstudio-max-generation/render.py variants
+      - name: Preserve only new originals plus cumulative provenance and cost records
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,shutil
+          from pathlib import Path
+          marker=Path('initial-manifest.json')
+          old=json.loads(marker.read_text()) if marker.exists() else {}
+          p=Path('trapstudio-max-output');d=Path('continuation');d.mkdir(exist_ok=True)
+          for f in p.glob('*.json'): shutil.copy2(f,d/f.name)
+          if marker.exists():
+              for f in p.glob('*.png'):
+                  if f.stem not in old: shutil.copy2(f,d/f.name)
+          report=p/'completion-variants.json'
+          if report.exists(): print(report.read_text())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: atelier-finished-variants-${{ github.run_id }}
+          path: continuation/
+          retention-days: 90
+          compression-level: 0

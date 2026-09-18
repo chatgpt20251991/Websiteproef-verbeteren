@@ -3,7 +3,7 @@
   "size": "3840x2160",
   "quality": "max",
   "userBudgetEUR": 50,
-  "maxPaidRequests": 70,
+  "maxPaidRequests": 71,
   "usdSpendCeiling": 30,
   "conservativeEURPerUSD": 1.5,
   "reserveUSDPerInFlightRequest": 1.25,
@@ -555,5 +555,5 @@
       "prompt": "Edit this exact 4K image. Preserve IDENTICAL camera, framing, staircase, all materials, furniture, walls, windows, glass and steel. Switch OFF all staircase tread LEDs and remove their local emitted light and spill. Keep all normal room lights, garden, sky and overall exposure unchanged. No text or UI. Return entire image at native 3840x2160 with crisp fine texture."
     }
   ],
-  "retryNote": "Two prior requests were rejected with HTTP 429; no timeout or uncertain connection is retried."
+  "resumptionNote": "User confirmed replenished API credits. Resume the 20 missing images only, preserving the cumulative USD 30 ceiling and EUR 50 authorization. The attempt ceiling includes three previous rejected requests."
 }
