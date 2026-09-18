@@ -1,0 +1,83 @@
+Create ONE extraordinary, finished, full-length desktop landing-page design mockup for the Dutch online automotive-business academy startjouwautobedrijf.nl. This is a visual design commission, NOT a website build. Output only the complete flat website design, from navigation through footer, at native 2160 x 3840 pixels. No surrounding browser, no presentation board, no multiple alternative screens.
+
+SOURCE OF TRUTH — THE TWO ATTACHED REFERENCES:
+1. original-website-reference.png is the owner's REAL original uploaded website, verified against its still-live original page. Its cinematic black showroom, warm ivory and champagne-gold palette, confident automotive presence and ambitious message are the starting DNA. Transform its design substantially: improve composition, typography, editorial pacing, product clarity and craftsmanship. It is a basis, not a layout to trace. Its old logo and €389 price are OUTDATED and must be replaced.
+2. original-platform-reference.jpg is a REAL screenshot of the owner's existing course platform. Put this actual recognizable interface inside a beautiful phone or narrow product-preview panel in the page. Keep the screenshot's content and design recognizable; do not invent a different dashboard, fake progress results, testimonials, charts or achievement figures. This embedded existing interface may retain its small old logo as authentic product content. Everywhere ELSE use the completely new brand mark.
+Previous assistant redesigns are deliberately NOT references.
+
+CREATIVE AMBITION:
+Work like an exceptional independent luxury automotive identity studio and a first-class hospitality digital design team. The result should feel like a contemporary premium automotive academy: beautifully photographed, extraordinarily composed, desirable, serious, credible and effortless to read. Aim for the polish of an international flagship brand in 2026, not a gold-and-black template. The luxury should come from superb typography, precise spacing, beautiful optical alignment, artful use of negative space, controlled visual tension, sculptural light and carefully selected detail. Design the ENTIRE page with equal care, not just a hero on top of generic blocks.
+Evolve the reference's near-black, ivory and champagne identity with your own sophisticated art direction. Restrained metallic warmth is welcome; muddy low-contrast brown and yellow-gold floods are not. You can add one intelligently chosen deep accent if it strengthens the design. Integrate the automotive photography with architectural lighting and subtle materials. Keep text backgrounds quiet and very legible. Use very limited refined material texture only where it helps.
+Choose an exceptional complementary type system: a distinctive modern display face, paired with an immaculate contemporary sans for utility/body text. Avoid thin italic serif everywhere. Strong editorial hierarchy, short copy, rich but controlled scale differences. Spacing must feel deliberate and expensive.
+Do not copy the Emirates logo, other car-brand logos or anybody else's trademark. First-class is a standard of service and craft, not an instruction to draw airplanes.
+
+COMPLETELY NEW LOGO — CENTRAL TO THIS COMMISSION:
+Design an ORIGINAL, confident automotive brand identity, not a recolor of the original serif wordmark. The exact full name is startjouwautobedrijf.nl; .nl is mandatory and belongs to the lockup. Invent a new distinctive geometric automotive symbol and a carefully drawn custom wordmark as one balanced, powerful horizontal identity. The symbol should make a car meaningfully recognizable through a clever, bold automotive form or negative space, not a stock roofline swoosh. Explore and choose your strongest concept internally; render only the selected polished mark.
+No SJA monogram, no initials badge, no shield, no crest, no laurel, no wings, no racing checkers, no vintage garage styling, no clip-art car parked above generic text, no chrome bevels, no tiny car replacing the letter o from earlier attempts.
+The USER specifically wants different colors in the LETTERS: use a considered two-tone typographic split, for example startjouw in ivory and autobedrijf in champagne with an intentional .nl color. Do not make the wordmark all one color. Keep this refined, not a rainbow. Make the logo prominent and genuinely readable in the header and repeated elegantly in the footer. It should also work as a flat vector-like mark.
+
+PRODUCT FACTS AND HONESTY:
+Name: Start Jouw Autobedrijf.
+A practical online education for professionally starting, running and growing an automotive trading business in the Netherlands.
+Audience: complete beginners, starters and existing car traders.
+42 modules. 325 lesonderdelen (NOT 325 videos). Based on 10 years of hands-on car-trade experience.
+One-time payment: €289 excl. btw. This is the ONLY amount to show anywhere. Do not show an inclusive-VAT price, old price, strikethrough, discount, payment installments or subscription price.
+6 months of access, no automatic renewal. Study at your own pace on phone/tablet/computer.
+Topics: company setup, vehicle inspection and risk, sourcing and purchasing, margins and cashflow, selling, legal/administrative essentials, systematic growth.
+No invented reviews, stars, customer count, money earned, accreditation, partnerships, press logos, scarcity timers, certification claims, risk statistics or guaranteed returns.
+Do not repeat the original site's unverified 9-out-of-10 failure statistic.
+Do not invent an instructor portrait. Use actual product evidence, course specifics and a real sample-lesson invitation as trust mechanisms.
+
+DECISION PSYCHOLOGY, IMPLEMENT IN THE DESIGN WITHOUT NAMING IT:
+Within seconds the visitor must understand WHAT this is, WHO it is for, WHAT they learn and HOW to inspect it. One clear primary action repeated consistently: "Krijg volledige toegang". Lower-commitment secondary action: "Bekijk de gratis les". Make real product evidence visible early. Be specific about curriculum, access and price so uncertainty is reduced. Group information into meaningful learning stages; don't overload people with 42 tiny module cards. Demonstrate substance before the final offer. The visual hierarchy should guide the eye naturally from promise to course preview to learning path to price and practical answers. Use benefit-led but sober Dutch copy. Do not print phrases like psychologically tested, conversion optimized or guaranteed success.
+
+RECOMMENDED FULL-PAGE COMPOSITION — EXERCISE ART DIRECTION, NOT A RIGID TEMPLATE:
+A. Refined header and a breathtaking cinematic automotive hero (around the top quarter). Logo, quiet links "Opleiding", "Het platform", "Vragen", "Inloggen", and the primary CTA. A professionally lit premium showroom photograph should be integrated into the composition, with authentic vehicle proportions and no visible third-party emblems. It should imply the real trade and professionalism, not get-rich fantasies. Create an extraordinary interplay of typography, architecture, car and negative space.
+Hero text, correctly spelled:
+Eyebrow: "DE ONLINE OPLEIDING VOOR AUTO-ONDERNEMERS"
+Headline: "Van ambitie tot autobedrijf."
+Supporting line: "En alles wat daarna komt."
+Body: "Leer professioneel inkopen, risico’s herkennen en winstgevend verkopen. Van je eerste auto tot een bedrijf dat op structuur draait."
+Primary CTA "Krijg volledige toegang" with nearby "€289 excl. btw · eenmalig".
+Secondary CTA "Bekijk de gratis les".
+Elegant compact factual row: "42 modules" / "325 lesonderdelen" / "10 jaar praktijkervaring".
+
+B. A beautiful product-evidence section integrated as a real editorial feature, not a generic SaaS card row.
+Eyebrow "EEN BLIK BINNENIN".
+Headline "Geen losse tips. Een compleet systeem."
+Use the attached ACTUAL course dashboard in an elegant device composition. Make it big enough to recognize, with generous space and highly legible text around it. One tasteful lesson-preview tile may read "Gratis proefles" and "Hoe je vanaf dag één professioneel begint" with a play symbol. Do not show a fake instructor or fake video still. An understated label "Een echt scherm uit de opleiding" can accompany the authentic screen.
+Short support: "42 modules, stap voor stap. Voor wie wil beginnen én voor wie al handelt."
+
+C. A distinctive curriculum section with editorial numbering, a fine continuous route or well-composed structured rows. Avoid six identical floating rounded cards. Rich hierarchy, easy scan.
+Headline "Van eerste inkoop tot professioneel autobedrijf."
+Group the actual subject areas into these six clearly readable chapters:
+"01  Een sterke bedrijfsbasis" — "Bedrijfsopzet, administratie en de juiste voorbereiding."
+"02  Inkopen met inzicht" — "Aanbod vinden, beoordelen en onderhandelen."
+"03  Risico’s leren herkennen" — "Inspectie, historie en kosten vooraf bekijken."
+"04  Verkopen met vertrouwen" — "Presentatie, klantcontact en verkoopproces."
+"05  Grip op je cijfers" — "Marges, kosten en cashflow."
+"06  Bouwen aan groei" — "Systemen, structuur en verdere ontwikkeling."
+These are thematic groups, not claims of only six modules.
+
+D. A memorable, spacious offer section that visually feels like admission to a serious professional learning environment.
+Headline "Jouw volgende stap begint hier."
+"Volledige toegang"
+Prominent exact price "€289" with clearly readable "excl. btw" beside it.
+"Eenmalige betaling · 6 maanden toegang"
+Include three short factual benefits: "Alle 42 modules", "325 lesonderdelen", "Leren op jouw tempo".
+CTA "Krijg volledige toegang".
+Quiet reassurance "Geen automatische verlenging."
+No cheesy price badges, fake sale urgency or extravagant payoff promises.
+
+E. Compact but legible practical FAQ and a fully finished footer.
+Headline "Goed om te weten."
+Three clean accordion-style rows:
+"Is dit geschikt zonder ervaring?"
+"Is de opleiding ook voor bestaande handelaren?"
+"Hoelang heb ik toegang?"
+One brief visible answer may say "Je krijgt zes maanden toegang en leert op je eigen tempo."
+Footer repeat the NEW logo, "info@startjouwautobedrijf.nl", "Voorwaarden", "Privacy", "© 2026".
+
+FINAL CRAFT CHECK BEFORE RENDERING:
+All typography must look typeset, not AI scribbles. Exact readable Dutch words. Logo spelling and .nl correct. Different letter colors in the new logo. No repeated section by accident. No cropped footer or overset text. Avoid text over visually busy cars. Preserve a compelling desktop composition despite the tall canvas. Take full advantage of the high native resolution for fine typography and material quality. Every section should look part of the same bespoke identity.
+Deliver ONE complete exquisite page image at native 2160 x 3840.
