@@ -1,0 +1,558 @@
+{
+  "model": "gpt-image-2.5-sunburst",
+  "size": "3840x2160",
+  "quality": "max",
+  "userBudgetEUR": 50,
+  "maxPaidRequests": 68,
+  "usdSpendCeiling": 30,
+  "conservativeEURPerUSD": 1.5,
+  "reserveUSDPerInFlightRequest": 1.25,
+  "priceSource": "https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst",
+  "existingRunId": 35285071947,
+  "jobs": [
+    {
+      "id": "japandi-oak-on",
+      "world": "japandi",
+      "material": "oak",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A spacious serene Japandi double-height entrance with a SINGLE STRAIGHT cantilever staircase, thick pale oak open treads anchored to a solid warm sand plaster wall, clear glass guard with slim oak handrail on the open side. Plaster walls, oak herringbone floor, rice-paper pendant, low linen sofa, one bonsai and sculptural ceramic. Morning side light. The complete flight and upper landing must be visible. Warm 2700K recessed LED under each tread."
+    },
+    {
+      "id": "japandi-oak-off",
+      "world": "japandi",
+      "material": "oak",
+      "led": false,
+      "parent": "japandi-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "japandi-ash-on",
+      "world": "japandi",
+      "material": "ash",
+      "led": true,
+      "parent": "japandi-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Licht essen: natural pale European ash wood with long flowing authentic grain, matte finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "japandi-ash-off",
+      "world": "japandi",
+      "material": "ash",
+      "led": false,
+      "parent": "japandi-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Licht essen: natural pale European ash wood with long flowing authentic grain, matte finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "scandi-ash-on",
+      "world": "scandi",
+      "material": "ash",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A bright Scandinavian family home with a clearly L-SHAPED OPEN staircase with two perpendicular straight flights and a square intermediate landing, natural light ash treads, white steel slim vertical balusters and ash handrail. White plaster walls, pale oak plank floor, wool rug, beige sofa, muted sage cabinet, large daylight window. Include full lower flight, landing and upper flight. Discreet recessed round 3000K wall step lights ON, no LED strips."
+    },
+    {
+      "id": "scandi-ash-off",
+      "world": "scandi",
+      "material": "ash",
+      "led": false,
+      "parent": "scandi-ash-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "scandi-whitewash-on",
+      "world": "scandi",
+      "material": "whitewash",
+      "led": true,
+      "parent": "scandi-ash-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Whitewash eiken: whitewashed European oak with visible natural grain, pale matte white pigment. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "scandi-whitewash-off",
+      "world": "scandi",
+      "material": "whitewash",
+      "led": false,
+      "parent": "scandi-ash-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Whitewash eiken: whitewashed European oak with visible natural grain, pale matte white pigment. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "loft-oak-on",
+      "world": "loft",
+      "material": "oak",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A sophisticated converted industrial brick loft with a SINGLE STRAIGHT OPEN staircase, a clearly visible black steel central spine beneath warm natural oak treads, black thin vertical steel balusters and continuous steel handrail. Exposed brick, tall steel factory windows, concrete floor, tobacco leather sofa, large abstract monochrome art, restrained plants. Warm recessed 2700K LED under handrail ON, not under treads. Afternoon light, full staircase and mezzanine visible."
+    },
+    {
+      "id": "loft-oak-off",
+      "world": "loft",
+      "material": "oak",
+      "led": false,
+      "parent": "loft-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "loft-black-on",
+      "world": "loft",
+      "material": "black",
+      "led": true,
+      "parent": "loft-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Zwart eiken: black-stained oak with clearly visible subtle oak grain, matte finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "loft-black-off",
+      "world": "loft",
+      "material": "black",
+      "led": false,
+      "parent": "loft-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Zwart eiken: black-stained oak with clearly visible subtle oak grain, matte finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "classic-walnut-on",
+      "world": "classic",
+      "material": "walnut",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A modern-classic European townhouse entrance with a U-SHAPED CLOSED walnut staircase: two straight parallel flights with a broad flat half-turn landing, matching walnut risers and refined slender painted cream turned balusters and walnut handrail. Cream wall mouldings, parquet flooring, antique brass pendant, modern restrained oil painting, marble console. Warm 2700K subtle integrated light under each tread ON. Entire stair layout reads clearly, elegant realistic residential proportions."
+    },
+    {
+      "id": "classic-walnut-off",
+      "world": "classic",
+      "material": "walnut",
+      "led": false,
+      "parent": "classic-walnut-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "classic-paint-cream-on",
+      "world": "classic",
+      "material": "paint-cream",
+      "led": true,
+      "parent": "classic-walnut-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Warmwit hout: opaque warm cream painted timber, refined matte finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "classic-paint-cream-off",
+      "world": "classic",
+      "material": "paint-cream",
+      "led": false,
+      "parent": "classic-walnut-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Warmwit hout: opaque warm cream painted timber, refined matte finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "hotel-marble-on",
+      "world": "hotel",
+      "material": "marble",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A luxurious residential villa foyer in hotel-chic style, a sweeping HELICAL CLOSED staircase curving gracefully without a central pole, wide Calacatta white marble treads and matching risers, transparent curved glass guard with bronze slim handrail. Warm greige walls, subtle bronze details, cream curved sofa, large stone floor, sculptural glass chandelier. Warm 2700K integrated under-tread lighting ON. Clearly show entire sweeping flight and usable upper landing, believable elegant proportions."
+    },
+    {
+      "id": "hotel-marble-off",
+      "world": "hotel",
+      "material": "marble",
+      "led": false,
+      "parent": "hotel-marble-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "hotel-nero-on",
+      "world": "hotel",
+      "material": "nero",
+      "led": true,
+      "parent": "hotel-marble-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Nero marmer: honed black Nero marble with fine contrasting white veins, natural stone texture. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "hotel-nero-off",
+      "world": "hotel",
+      "material": "nero",
+      "led": false,
+      "parent": "hotel-marble-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Nero marmer: honed black Nero marble with fine contrasting white veins, natural stone texture. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "mediterranean-travertine-on",
+      "world": "mediterranean",
+      "material": "travertine",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A contemporary Mediterranean courtyard house, a gently CURVED CLOSED residential staircase clad in filled honed sand travertine, solid sculpted sand plaster guard wall with smooth rounded top. Sunlit arched garden opening, olive tree, travertine tile floor, woven bench, terracotta vessel, limewashed warm walls. Recessed 3000K wall step lights ON in the inner stair wall, no tread strips. Show complete curved stair and upper landing with continuous walking surface, warm midday light."
+    },
+    {
+      "id": "mediterranean-travertine-off",
+      "world": "mediterranean",
+      "material": "travertine",
+      "led": false,
+      "parent": "mediterranean-travertine-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "mediterranean-microcement-on",
+      "world": "mediterranean",
+      "material": "microcement",
+      "led": true,
+      "parent": "mediterranean-travertine-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Microcement zand: warm sand beige microcement with subtle cloudy texture, matte sealed finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "mediterranean-microcement-off",
+      "world": "mediterranean",
+      "material": "microcement",
+      "led": false,
+      "parent": "mediterranean-travertine-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Microcement zand: warm sand beige microcement with subtle cloudy texture, matte sealed finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "brutalist-concrete-on",
+      "world": "brutalist",
+      "material": "concrete",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A minimalist architect-designed home with a SINGLE STRAIGHT FOLDED-PLATE CLOSED concrete staircase, continuous zigzag side profile with solid tread-riser folds in light grey sealed concrete, structurally coherent support, clear glass guard and slender dark handrail. Tall raw concrete wall, warm off-white ceiling, pale seamless floor, one low sculptural chair, large quiet abstract artwork and narrow skylight. Recessed warm 2700K handrail light ON. Full stair and arrival landing, precision architecture, softened afternoon daylight."
+    },
+    {
+      "id": "brutalist-concrete-off",
+      "world": "brutalist",
+      "material": "concrete",
+      "led": false,
+      "parent": "brutalist-concrete-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "brutalist-graphite-on",
+      "world": "brutalist",
+      "material": "graphite",
+      "led": true,
+      "parent": "brutalist-concrete-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Microcement grafiet: deep graphite microcement finish, subtle mineral texture, matte sealed. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "brutalist-graphite-off",
+      "world": "brutalist",
+      "material": "graphite",
+      "led": false,
+      "parent": "brutalist-concrete-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Microcement grafiet: deep graphite microcement finish, subtle mineral texture, matte sealed. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "urban-beech-on",
+      "world": "urban",
+      "material": "beech",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A narrow but elegant Dutch terraced-house entrance, a compact CLOSED QUARTER-TURN staircase with three clearly legible winder treads at the bottom leading to a straight upper run, natural beech treads and matching risers, white vertical timber balusters and beech handrail. Built-in coat closet under stairs, warm white walls, pale timber floor, small oak bench and oval mirror, soft window daylight. Warm 2700K under-tread LED ON. Camera pulled back enough to show safe broad outer edges of winder treads and full flight."
+    },
+    {
+      "id": "urban-beech-off",
+      "world": "urban",
+      "material": "beech",
+      "led": false,
+      "parent": "urban-beech-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "urban-bamboo-on",
+      "world": "urban",
+      "material": "bamboo",
+      "led": true,
+      "parent": "urban-beech-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Bamboe caramel: laminated caramel bamboo with fine authentic linear grain, matte finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "urban-bamboo-off",
+      "world": "urban",
+      "material": "bamboo",
+      "led": false,
+      "parent": "urban-beech-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Bamboe caramel: laminated caramel bamboo with fine authentic linear grain, matte finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "spiral-oak-on",
+      "world": "spiral",
+      "material": "oak",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A refined creative home atelier with a clearly SPIRAL staircase around a single dark central steel pole, warm oak wedge treads, continuous thin vertical black balusters and black curved handrail, secure upper landing connected to mezzanine. Tall windows, off-white wall, pale concrete floor, artist work table with ceramics, soft green lounge chair, linen curtains. Warm integrated 2700K lighting under the curved handrail ON. Full spiral from base to landing, realistic headroom and continuous geometrically coherent treads."
+    },
+    {
+      "id": "spiral-oak-off",
+      "world": "spiral",
+      "material": "oak",
+      "led": false,
+      "parent": "spiral-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "spiral-sage-steel-on",
+      "world": "spiral",
+      "material": "sage-steel",
+      "led": true,
+      "parent": "spiral-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Saliegroen staal: sage green powdercoated steel treads with subtle fine anti-slip texture; retain all pole, balusters and room geometry. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "spiral-sage-steel-off",
+      "world": "spiral",
+      "material": "sage-steel",
+      "led": false,
+      "parent": "spiral-oak-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Saliegroen staal: sage green powdercoated steel treads with subtle fine anti-slip texture; retain all pole, balusters and room geometry. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "coastal-whitewash-on",
+      "world": "coastal",
+      "material": "whitewash",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A contemporary coastal dune house with a CLOSED L-SHAPED staircase and broad square quarter-turn landing, whitewashed oak treads and risers, simple slender whitewashed vertical timber balusters and matching handrail. Chalk-white walls, light plank floor, natural linen sofa, woven pendant, dune grasses beyond large glazing, sand-coloured ceramics. Small recessed 3000K wall step lights ON, no tread strips. Full two flights and landing clearly visible, airy natural light."
+    },
+    {
+      "id": "coastal-whitewash-off",
+      "world": "coastal",
+      "material": "whitewash",
+      "led": false,
+      "parent": "coastal-whitewash-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "coastal-oak-on",
+      "world": "coastal",
+      "material": "oak",
+      "led": true,
+      "parent": "coastal-whitewash-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Naturel eiken: natural pale European oak with fine grain, matte-oiled finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "coastal-oak-off",
+      "world": "coastal",
+      "material": "oak",
+      "led": false,
+      "parent": "coastal-whitewash-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Naturel eiken: natural pale European oak with fine grain, matte-oiled finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "country-rustic-on",
+      "world": "country",
+      "material": "rustic",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A premium renovated Dutch farmhouse entrance with a CLOSED DOUBLE-QUARTER-TURN staircase, two 90-degree winder turns and central straight run, rustic knotted oak treads and risers, slim black steel vertical balusters and oak handrail. Original oak ceiling beams, taupe clay walls, natural stone floor, linen bench, quiet antique ceramic, garden view. Warm 2700K under-tread LED ON. Readable continuous stair geometry, generous winder outer treads, show full stair and top landing without fisheye."
+    },
+    {
+      "id": "country-rustic-off",
+      "world": "country",
+      "material": "rustic",
+      "led": false,
+      "parent": "country-rustic-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "country-smoked-on",
+      "world": "country",
+      "material": "smoked",
+      "led": true,
+      "parent": "country-rustic-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Gerookt eiken: smoked oak with deep warm brown grain, matte finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "country-smoked-off",
+      "world": "country",
+      "material": "smoked",
+      "led": false,
+      "parent": "country-rustic-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Gerookt eiken: smoked oak with deep warm brown grain, matte finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "deco-walnut-on",
+      "world": "deco",
+      "material": "walnut",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A refined art-deco inspired residential entrance with a gently CURVED CLOSED staircase, rich walnut treads and risers, elegant closely spaced vertical brass balusters and dark walnut curved handrail. Deep green panelled walls, cream and charcoal geometric marble floor, sculptural opaline globe pendant, velvet bench, restrained vintage artwork. Warm recessed 2700K handrail LED ON, no tread LED. No excess ornament, complete curved staircase and usable upper landing, luxurious natural photographic contrast."
+    },
+    {
+      "id": "deco-walnut-off",
+      "world": "deco",
+      "material": "walnut",
+      "led": false,
+      "parent": "deco-walnut-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "deco-emerald-on",
+      "world": "deco",
+      "material": "emerald",
+      "led": true,
+      "parent": "deco-walnut-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Diepgroen hout: opaque deep emerald green painted timber in understated satin finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "deco-emerald-off",
+      "world": "deco",
+      "material": "emerald",
+      "led": false,
+      "parent": "deco-walnut-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Diepgroen hout: opaque deep emerald green painted timber in understated satin finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "color-terrazzo-on",
+      "world": "color",
+      "material": "terrazzo",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A playful but very sophisticated contemporary design home with a SINGLE STRAIGHT CLOSED staircase clad in pale rose terrazzo with small grey, cream and pink aggregates, slender burgundy powdercoated vertical metal balusters and handrail. Dusty pink plaster walls, pale terrazzo floor, cobalt blue side chair, sculptural cream sofa, graphic art without lettering, large soft daylight window. Warm 2700K under-tread LEDs ON. Architectural editorial photography, full staircase visible, no cartoon style."
+    },
+    {
+      "id": "color-terrazzo-off",
+      "world": "color",
+      "material": "terrazzo",
+      "led": false,
+      "parent": "color-terrazzo-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "color-burgundy-on",
+      "world": "color",
+      "material": "burgundy",
+      "led": true,
+      "parent": "color-terrazzo-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Bordeaux hout: opaque rich burgundy red painted timber, refined matte finish. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "color-burgundy-off",
+      "world": "color",
+      "material": "burgundy",
+      "led": false,
+      "parent": "color-terrazzo-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Bordeaux hout: opaque rich burgundy red painted timber, refined matte finish. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "biophilic-bamboo-on",
+      "world": "biophilic",
+      "material": "bamboo",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A biophilic garden home with an OPEN U-SHAPED staircase, two straight parallel runs and a broad half-turn landing, laminated caramel bamboo treads on dark concealed steel support, close vertical bamboo slat guard and bamboo handrail. Large lush courtyard glazing, muted sage plaster walls, natural stone floor, abundant restrained plants, woven lounge chair, warm organic decor. Warm recessed 2700K LED under handrail ON. Full coherent stairs visible including return run and landing, open risers, dappled afternoon light."
+    },
+    {
+      "id": "biophilic-bamboo-off",
+      "world": "biophilic",
+      "material": "bamboo",
+      "led": false,
+      "parent": "biophilic-bamboo-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "biophilic-cork-on",
+      "world": "biophilic",
+      "material": "cork",
+      "led": true,
+      "parent": "biophilic-bamboo-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Naturel kurk: natural warm cork floor-grade covering over the existing sturdy tread structure with softly visible cork granules, matte sealed surface; keep the open risers. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "biophilic-cork-off",
+      "world": "biophilic",
+      "material": "cork",
+      "led": false,
+      "parent": "biophilic-bamboo-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Naturel kurk: natural warm cork floor-grade covering over the existing sturdy tread structure with softly visible cork granules, matte sealed surface; keep the open risers. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "monument-carpet-on",
+      "world": "monument",
+      "material": "carpet",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A lovingly renovated 1930s Dutch character house entrance with a SINGLE STRAIGHT CLOSED staircase fully clad on treads and risers in premium greige wool boucle carpet, white traditional vertical timber balusters and dark oak handrail. Warm white panelled walls, dark oak parquet, stained glass daylight transom, antique console, contemporary ceramic lamp, subtle period details. Small recessed 3000K wall step lights ON. Entire comfortable residential stair and upper landing visible, convincing textile weave, no carpet wrinkles."
+    },
+    {
+      "id": "monument-carpet-off",
+      "world": "monument",
+      "material": "carpet",
+      "led": false,
+      "parent": "monument-carpet-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "monument-sisal-on",
+      "world": "monument",
+      "material": "sisal",
+      "led": true,
+      "parent": "monument-carpet-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Sisal loper: a natural sisal woven runner centered on oak treads and oak risers, 70 percent of tread width, with a slim charcoal bound border and exposed warm oak edges; remove existing full-width carpet. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "monument-sisal-off",
+      "world": "monument",
+      "material": "sisal",
+      "led": false,
+      "parent": "monument-carpet-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Sisal loper: a natural sisal woven runner centered on oak treads and oak risers, 70 percent of tread width, with a slim charcoal bound border and exposed warm oak edges; remove existing full-width carpet. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "penthouse-limestone-on",
+      "world": "penthouse",
+      "material": "limestone",
+      "led": true,
+      "parent": null,
+      "prompt": "Create one clean ultra-refined architectural interior photograph for a premium Dutch staircase design studio. Output native 3840x2160 pixels, crisp authentic material texture at 4K. Eye-level 28mm architectural lens, straight verticals, full staircase is the hero and occupies the central 65 percent of image, show its connection to both floors. Sophisticated styling, realistic structural proportions, continuous usable treads, credible handrails and guards. Rich tactile materials, subtle imperfections, soft physical light and contact shadows, balanced highlights, no excessive HDR or bloom. No people, text, labels, logos, watermark, collage or UI. A luxurious quiet penthouse with a SINGLE STRAIGHT cantilever staircase of thick warm honed limestone open treads anchored into a substantial sand plaster wall, frameless clear glass guard and slender brushed dark metal handrail. Large floor-to-ceiling city skyline windows, warm stone slab floor, cream low sofa, dark sculpture, slim bronze floor lamp. Warm recessed 2700K under-tread LEDs ON. Full staircase and upper gallery in frame, coherent support and natural contact shadows, late afternoon daylight."
+    },
+    {
+      "id": "penthouse-limestone-off",
+      "world": "penthouse",
+      "material": "limestone",
+      "led": false,
+      "parent": "penthouse-limestone-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "penthouse-basalt-on",
+      "world": "penthouse",
+      "material": "basalt",
+      "led": true,
+      "parent": "penthouse-limestone-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Donker basalt: dark charcoal basalt stone with fine natural grain and gently textured matte surface. Keep the staircase accent lighting ON exactly as in the reference. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "penthouse-basalt-off",
+      "world": "penthouse",
+      "material": "basalt",
+      "led": false,
+      "parent": "penthouse-limestone-on",
+      "prompt": "Edit the supplied exact 4K architectural master. Preserve IDENTICAL camera, framing, perspective, staircase geometry, all steps, landing, railings, walls, windows, furniture, plants and decorations. Change ONLY the staircase tread and riser finish to Donker basalt: dark charcoal basalt stone with fine natural grain and gently textured matte surface. Switch OFF only the integrated staircase accent lighting (tread strips, handrail LEDs or recessed stair-wall spots, whichever is present); remove its local emitted light and spill. Leave pendants and other room lights ON, with identical daylight, exposure and furnishings. Change nothing else. Return the complete clean 3840x2160 image with authentic crisp material micro-detail, no text or UI."
+    },
+    {
+      "id": "walnut-off",
+      "world": "signature",
+      "material": "walnut",
+      "led": false,
+      "parent": "existing:walnut-on",
+      "prompt": "Edit this exact 4K image. Preserve IDENTICAL camera, framing, staircase, all materials, furniture, walls, windows, glass and steel. Switch OFF all staircase tread LEDs and remove their local emitted light and spill. Keep all normal room lights, garden, sky and overall exposure unchanged. No text or UI. Return entire image at native 3840x2160 with crisp fine texture."
+    },
+    {
+      "id": "smoked-off",
+      "world": "signature",
+      "material": "smoked",
+      "led": false,
+      "parent": "existing:smoked-on",
+      "prompt": "Edit this exact 4K image. Preserve IDENTICAL camera, framing, staircase, all materials, furniture, walls, windows, glass and steel. Switch OFF all staircase tread LEDs and remove their local emitted light and spill. Keep all normal room lights, garden, sky and overall exposure unchanged. No text or UI. Return entire image at native 3840x2160 with crisp fine texture."
+    },
+    {
+      "id": "black-on",
+      "world": "signature",
+      "material": "black",
+      "led": true,
+      "parent": "existing:black-off",
+      "prompt": "Edit this exact 4K image. Preserve IDENTICAL camera, framing, staircase, all materials, furniture, walls, windows, glass and steel. Switch ON warm 2700K recessed LEDs under every stair tread, with subtle realistic spill on risers and nearby floor. Keep all normal room lights, garden, sky and overall exposure unchanged. No text or UI. Return entire image at native 3840x2160 with crisp fine texture."
+    },
+    {
+      "id": "whitewash-off",
+      "world": "signature",
+      "material": "whitewash",
+      "led": false,
+      "parent": "existing:whitewash-on",
+      "prompt": "Edit this exact 4K image. Preserve IDENTICAL camera, framing, staircase, all materials, furniture, walls, windows, glass and steel. Switch OFF all staircase tread LEDs and remove their local emitted light and spill. Keep all normal room lights, garden, sky and overall exposure unchanged. No text or UI. Return entire image at native 3840x2160 with crisp fine texture."
+    }
+  ]
+}

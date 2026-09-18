@@ -1,0 +1,65 @@
+name: TrapStudio Atelier native 4K catalog
+on:
+  push:
+    branches: ['trapstudio-atelier-20260918']
+    paths: ['.github/workflows/trapstudio-atelier-20260918.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: trapstudio-atelier-images
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'requests==2.32.5' 'Pillow==11.3.0'
+      - name: Reuse existing six verified 4K source images
+        uses: actions/download-artifact@v4
+        with:
+          name: trapstudio-4k-originals-35285071947
+          path: existing-4k
+          run-id: 35285071947
+          github-token: ${{ github.token }}
+      - name: Check the previous originals before making paid requests
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          p=Path('existing-4k')
+          manifest=json.loads((p/'manifest.json').read_text())
+          assert len(manifest)==6
+          for k,m in manifest.items():
+              assert hashlib.sha256((p/(k+'.png')).read_bytes()).hexdigest()==m['sha256']
+          print('Six previous originals verified.')
+          PY
+      - name: Generate the sixteen architectural world masters within the approved budget
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          PYTHONUNBUFFERED: '1'
+        run: python trapstudio-max-generation/render.py masters
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trapstudio-atelier-world-masters-${{ github.run_id }}
+          path: trapstudio-max-output/
+          retention-days: 90
+          compression-level: 0
+      - name: Generate consistent material and lighting edits with metered spend
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          PYTHONUNBUFFERED: '1'
+        run: python trapstudio-max-generation/render.py variants
+      - name: Preserve all originals, prompts, provenance and cost records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: trapstudio-atelier-complete-${{ github.run_id }}
+          path: trapstudio-max-output/
+          retention-days: 90
+          compression-level: 0
