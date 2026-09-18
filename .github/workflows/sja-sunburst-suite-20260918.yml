@@ -1,0 +1,64 @@
+name: SJA Sunburst MAX responsive design suite
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sja-sunburst-suite-20260918.yml'
+      - 'sja-sunburst-suite-20260918/**'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sja-sunburst-suite-20260918
+  cancel-in-progress: false
+jobs:
+  design:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install image transport dependencies
+        run: python3 -m pip install --disable-pip-version-check requests==2.32.5 Pillow==11.3.0
+      - name: Retrieve the user attached reference
+        env:
+          GH_ARTIFACT_TOKEN: ${{ github.token }}
+        run: python3 sja-sunburst-suite-20260918/fetch_reference.py
+      - name: Validate references
+        run: python3 sja-sunburst-suite-20260918/generate_suite.py --stage master --validate-only
+      - name: Generate dashboard visual master
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sja-sunburst-suite-20260918/generate_suite.py --stage master
+      - name: Preserve visual master
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sja-suite-master-20260918
+          path: sunburst-suite-output/
+          retention-days: 14
+          compression-level: 0
+      - name: Generate marketing and lesson desktop designs
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sja-sunburst-suite-20260918/generate_suite.py --stage desktop
+      - name: Preserve desktop mockups
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sja-suite-desktops-20260918
+          path: sunburst-suite-output/
+          retention-days: 14
+          compression-level: 0
+      - name: Generate matching mobile designs
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sja-sunburst-suite-20260918/generate_suite.py --stage mobile
+      - name: Preserve complete concept suite and reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sja-suite-complete-20260918
+          path: sunburst-suite-output/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

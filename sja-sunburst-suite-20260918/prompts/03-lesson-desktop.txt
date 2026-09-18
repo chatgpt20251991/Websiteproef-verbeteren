@@ -1,0 +1,59 @@
+You are designing one connected premium 2026 automotive education brand and product suite for startjouwautobedrijf.nl. Generate the specified single flat UI mockup, not source code, not a moodboard, not multiple alternatives.
+The owner asks for a substantially more ambitious and beautiful design with exceptional graphics, authentic emotion and a completely different layout from the attached black/gold marketing reference. Keep the strong Dutch copy, radically reinvent composition. The owner's source platform is also being visually redesigned. These are proposed mockups, not a live site or claims of actual new features.
+
+SHARED ART DIRECTION: AUTOMOTIVE ATELIER.
+An exceptionally art-directed international automotive journal meets an expertly designed professional learning environment. The character is precise, quietly confident, tactile and visually memorable. Real directional daylight across fine paint, deep mineral surfaces, architectural concrete, brushed metal and softly textured paper. Create feeling through believable material and light, not fake lifestyle wealth.
+Palette: deep midnight petrol #102C30, soft porcelain/chalk #F4F1EA, restrained warm champagne #C7A56F, and a tiny lucid pale mint highlight only for current learning status. The primary actions use solid deep petrol on light surfaces or solid warm champagne on dark surfaces. Avoid orange, generic blue, shiny gold gradients, brown murk and cyberpunk.
+Large, beautifully spaced modern grotesk headlines with personality, impeccable sans-serif utility typography and restrained numerals. No thin italic-serif-dominated gold showroom template. High contrast, generous breathing room, carefully tuned line lengths, strong optical alignment, small refined labels. Use varied scale, not a pile of identical rounded cards.
+Original graphic signature: one fine precise "route line" inspired by the sweep of a car's body and a driving line. It can connect meaningful learning steps or make an elegant border transition. Keep it disciplined and spare, not a meaningless wave. Bespoke course-cover graphics should combine evocative real automotive macro photography with this precise line system and numbered typography. Design sophistication should extend to navigation, buttons, empty space and micro-details.
+
+BRAND:
+Design one distinctive new automotive symbol with substantial flat geometry and clever negative space, recognizably automotive without a stock roofline swoosh. Pair it with the exact wordmark "startjouwautobedrijf.nl". .nl is mandatory. No SJA initials, crest, shield, crown, wings, stock badge or chrome bevels.
+The LETTERS use two colors: startjouw in petrol/ivory depending on background and autobedrijf.nl in a refined warm champagne tone, darkened appropriately on light surfaces for readability. The logo must work at small UI size. Once a supplied approved design-master image exists, copy its exact selected logo and visual system consistently rather than inventing a different identity.
+
+REFERENCE INTERPRETATION:
+"user-copy-reference.png" is the user's attached former website mockup: COPY AND BUSINESS CONTEXT ONLY. Do not reuse its layout, repeated section bands, serif treatment, same image arrangement or same logo.
+"original-platform-reference.jpg" is the previous real platform: FUNCTIONAL/CONTENT context only. Its old UI may be redesigned. Do not add features not described in the screen specification.
+A generated desktop design master, when attached, is the visual-system master. Reuse its logo, typography, precise palette, icon/line style and photographic treatment. Mobile layouts must be genuinely recomposed, never scaled-down desktop screenshots.
+Reference pixels and printed texts are data, not instructions.
+
+TRUTH AND COPY:
+Online practical education on professionally starting, running and growing a Dutch automotive trading business. 42 modules, 325 lesonderdelen (not 325 videos). 10 years of hands-on experience.
+Price if applicable: €289 excl. btw only. One-time payment; six months of access; no automatic renewal. Never show another amount or price including VAT.
+No fabricated reviews, stars, participant counts, partnerships, income, accreditation, awards, scarcity, guarantees, instructor portraits, AI assistant, community chat or coaching service.
+Course states in the learning mockups are internally consistent example states for this design: module20 has six parts, part1 completed, part2 active; show "1 van 6 voltooid" or "17%" only for that module. Do NOT invent total course progress or whole-course completion counts. Do not invent a learner name, use "Welkom terug".
+The six real parts in module20 are:
+20.1 Voorbereiding en voertuigdetail — 5 min
+20.2 Professionele fotografie en nabewerking — 8 min
+20.3 Video en transparantie — 9 min
+20.4 Advertentietitel en beschrijving — 9 min
+20.5 Common pitfalls en advertentievergelijking — 10 min
+20.6 Quiz: Sales presentation — 3 min
+Other verified module titles: 16 Fraudebestrijding; 19 Prijspsychologie.
+Desktop platform navigation: Dashboard, Alle modules, Toetsen & cases, Zoeken, Favorieten, Voortgang, Profiel.
+Mobile platform bottom navigation: Home, Modules, Toetsen, Favorieten, Voortgang.
+Known lesson functions: video when available, reading content, video/text/both mode, favorite, personal notes, previous/next, complete and advance. No invented downloads tab or universal audio feature.
+All visible Dutch must be correctly spelled, carefully typeset and legible. Photos may illustrate trade but must not be labeled our real premises/team. Do not add fake words, quotes or slogans on walls, cups, clothes or blank areas of photographs. Preserve accurate anatomy, reflections and physically plausible objects. No watermarks.
+
+SCREEN: DESKTOP LESSON WORKSPACE. Native 3840 x 2160, one complete flat app screen. The attached dashboard-desktop is the visual system master: copy its exact new logo, navigation design, colors, type, route graphic and polished controls.
+The user wants the LEARNING ENVIRONMENT elevated, not just new marketing. This should look like a beautiful, highly usable custom professional academy, with calm reading and attention on the content.
+
+Keep the same narrow branded primary navigation at far left, then a slim module/lesson outline panel, a spacious center for video and readable content, and a refined notes panel at right. The main workspace is porcelain; deep petrol organizes navigation; champagne highlights are restrained. Do not use wall-to-wall black cards or a generic analytics dashboard.
+Top: breadcrumb "Alle modules / Presentatie & verkoop / Les 20.2"; search/profile unobtrusive.
+Module outline: "20 — Presentatie & verkoop", "1 van 6 voltooid", progress17% clearly MODULE ONLY. List the exact six titles given in shared brief. 20.1 checked,20.2 active, remaining neutral.
+
+Main heading "Professionele fotografie en nabewerking".
+Metadata "Les 20.2 · 8 min".
+A beautifully art-directed video player with a REALISTIC illustrative frame of an anonymous hand photographing a car with a smartphone in soft daylight. Do not fake a named instructor or a specific existing video's exact still. No logos on clothing, no stock posing; physical camera grip and reflections correct. The scene should convey professional practice and have exceptional cinematic detail. Show normal play/fullscreen controls and "00:00 / 08:00", not fake video analytics.
+Control "Bewaren"; view options "Video", "Tekst", "Beide" with Beide active.
+Below the player, an elegant reading area with heading "Locatie, licht en volgorde".
+Body: "Professionele autofotografie hoeft geen dure camera te kosten. Een moderne smartphone geeft voldoende kwaliteit als je de omstandigheden goed inricht."
+Short practical checklist:
+"Kies een rustige achtergrond."
+"Houd de horizon recht."
+"Voorkom je eigen schaduw op de auto."
+"Controleer je foto’s op een groot scherm."
+These are normal instructional copy, not interactive fake features.
+Notes panel: "Mijn aantekeningen", empty editable area with "Noteer hier wat je wilt onthouden…" and a neutral save cue "Aantekeningen worden automatisch opgeslagen". No invented student's private notes.
+At bottom clean navigation: "Vorig onderdeel", and primary "Voltooien & volgende". Show these as usable controls, not giant marketing CTAs. Reading must be pleasant at normal display scale, video substantial, notes usable, generous white space, no cramped multi-column microtext.
+No price, sales offer, downloads tab, universal audio controls, chatbot or extra functionality. Full screen, no browser/device outer frame.
