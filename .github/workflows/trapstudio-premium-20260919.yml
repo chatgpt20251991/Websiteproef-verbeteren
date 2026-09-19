@@ -1,0 +1,79 @@
+name: TrapStudio premium interface and material 4K assets
+on:
+  push:
+    branches: ['trapstudio-atelier-20260918']
+    paths: ['.github/workflows/trapstudio-premium-20260919.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: trapstudio-atelier-images
+  cancel-in-progress: false
+jobs:
+  premium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'requests==2.32.5' 'Pillow==11.3.0'
+      - uses: actions/download-artifact@v4
+        with:
+          name: atelier-finished-variants-35388390448
+          path: trapstudio-max-output
+          run-id: 35388390448
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: trapstudio-4k-originals-35285071947
+          path: existing-4k
+          run-id: 35285071947
+          github-token: ${{ github.token }}
+      - name: Verify cumulative cost and paid request count
+        run: |
+          python - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          from PIL import Image
+          p=Path('trapstudio-max-output')
+          ledger=json.loads((p/'cost-ledger.json').read_text())
+          assert ledger['attempted']==71 and abs(ledger['estimatedUSD']-27.899648)<0.000001
+          plan=json.loads(Path('trapstudio-max-generation/plan.json').read_text())
+          assert plan['usdSpendCeiling']==33 and plan['maxPaidRequests']==80
+          assert len(plan['jobs'])==9 and plan['usdSpendCeiling']*plan['conservativeEURPerUSD']<=50
+          reference=Path('existing-4k/oak-on.png')
+          old=json.loads(Path('existing-4k/manifest.json').read_text())
+          assert hashlib.sha256(reference.read_bytes()).hexdigest()==old['oak-on']['sha256']
+          assert Image.open(reference).size==(3840,2160)
+          Path('premium-initial-ids.json').write_text(json.dumps(list(json.loads((p/'manifest.json').read_text()))))
+          print('Existing cumulative spend verified; 9 new requests maximum, total budget unchanged.')
+          PY
+      - name: Generate approved premium designs and six material macros
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+          PYTHONUNBUFFERED: '1'
+          TRAPSTUDIO_CONCURRENCY: '2'
+        run: python trapstudio-max-generation/render.py all
+      - name: Collect new premium assets and cumulative provenance
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,shutil
+          from pathlib import Path
+          p=Path('trapstudio-max-output'); d=Path('premium-output'); d.mkdir(exist_ok=True)
+          marker=Path('premium-initial-ids.json')
+          old=set(json.loads(marker.read_text())) if marker.exists() else set()
+          for f in p.glob('*.json'): shutil.copy2(f,d/f.name)
+          if marker.exists():
+              for f in p.glob('*.png'):
+                  if f.stem not in old: shutil.copy2(f,d/f.name)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: trapstudio-premium-4k-${{ github.run_id }}
+          path: premium-output/
+          retention-days: 90
+          compression-level: 0
