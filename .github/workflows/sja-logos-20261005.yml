@@ -1,0 +1,50 @@
+name: SJA ten Sunburst logo concepts
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sja-logos-20261005.yml'
+      - 'sja-logos-20261005/**'
+permissions:
+  contents: read
+concurrency:
+  group: sja-logos-20261005
+  cancel-in-progress: false
+jobs:
+  logos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install image transport dependencies
+        run: python3 -m pip install --disable-pip-version-check requests==2.32.5 Pillow==11.3.0
+      - name: Validate ten concept briefs
+        run: |
+          python3 sja-logos-20261005/generate_logos.py --stage first --validate-only
+          python3 sja-logos-20261005/generate_logos.py --stage second --validate-only
+      - name: Generate concepts 01 to 05
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sja-logos-20261005/generate_logos.py --stage first
+      - name: Preserve first five for visual review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sja-logos-first-five-20261005
+          path: sunburst-logos-output/
+          retention-days: 14
+          compression-level: 0
+      - name: Generate concepts 06 to 10
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sja-logos-20261005/generate_logos.py --stage second
+      - name: Preserve all logos and exact design briefs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: sja-logos-complete-20261005
+          path: sunburst-logos-output/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0

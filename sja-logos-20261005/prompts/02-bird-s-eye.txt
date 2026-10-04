@@ -1,0 +1,22 @@
+Use case: logo-brand.
+Create ONE high-end logo concept presentation with in-context mockups for the Dutch online education platform "startjouwautobedrijf.nl". This is concept NUMBER 02, called "Bird's Eye". Design a genuinely original, timeless 2026 automotive education identity, exceptionally polished and distinctive, worthy of a serious premium brand. It must look expertly constructed and typographically refined.
+
+CONCEPT TO DEVELOP: A memorable TOP-DOWN car silhouette, shown nose upward: tapering solid body, two perfectly balanced negative-space glass areas and minimal wheel interruptions. Tall icon beside a refined wide wordmark. Design like a premium automotive technology identity, not a map parking icon.
+LETTER COLORS: Dark forest green #183E37 and warm copper #B67752.
+Color the ACTUAL WORDMARK LETTERS in two different colors, specifically "startjouw" in the dark color and "autobedrijf.nl" in the complementary accent. .nl is compulsory and plainly readable. No all-one-color wordmark. On a dark application surface use warm ivory for the dark-color letters and retain a sufficiently legible accent.
+The exact wordmark is "startjouwautobedrijf.nl", with no spaces, no alternative spelling, no missing letters. Include the automobile meaning in the SYMBOL, not a little car replacing a letter. The wording is long: balance the logo so all letters remain easy to read. Custom letterform details are welcome but do not distort readability.
+
+CURRENT PLATFORM CONTEXT:
+The uploaded platform uses a calm premium Atelier visual system: warm ivory/porcelain surfaces, deep petrol navigation and sections, champagne accents, Inter-style modern text, architectural daylight automotive photography. It is a learning platform about starting, running and growing a car trading company, not a repair garage, car rental site, race team or car manufacturer.
+Use this real context for the applications. The goal is to choose a NEW logo, not build or redesign the live site. Do not copy the previous generic car-roof wordmark. No SJA initials, crest, shield, crown, wing badge, laurels, fake awards, stock swooshes, chrome gradients, bevels, clip art, tiny elaborate details or visual similarity to an existing car marque.
+
+PRESENTATION, EXACTLY ONE CONCEPT PER IMAGE:
+A carefully laid out LANDSCAPE brand-design board at native2560x1440, generous margins, warm porcelain background, clean graphic-design presentation. Tiny quiet caption top-left "02 — Bird's Eye". Do not turn this caption into a second brand.
+UPPER APPROXIMATELY55%: the large primary full lockup, symbol plus exact two-tone wordmark, displayed flat and crisply like vector artwork. It should dominate the board, with elegant white space. No physical embossing or lighting effects in this main logo; judge the design itself.
+LOWER LEFT APPROXIMATELY65% WIDTH: a beautiful realistic DIGITAL WEBSITE HEADER/hero-crop mockup for this platform, using the SAME chosen symbol and wordmark in its navigation. It sits on ivory, with a tasteful small architectural car photo and the existing headline "Van ambitie tot autobedrijf." Supporting text "En alles wat daarna komt." Small CTA "Bekijk de opleiding". Keep this UI crop calm and secondary to the logo; it is just sufficient context to understand the brand in use. No fake reviews, metrics, prices or new claims.
+LOWER RIGHT APPROXIMATELY35% WIDTH: a small MOBILE LEARNING-PLATFORM HEADER mockup on a deep-petrol panel, with the identical logo suitably reversed, and minimal interface copy "Mijn opleiding", "Welkom terug." A small app-icon tile may demonstrate just the same symbol at small size. Avoid tiny complicated full dashboards.
+Use subtle borders and refined editorial spacing to organize the lower applications. No laptop hardware or phone hardware is required; plain UI panels keep attention on the identity.
+All repeated instances MUST be the exact same symbol and wordmark, only scale and appropriate contrast adaptation may change. Do not show other alternatives on this board.
+
+CRAFT:
+Strong silhouette, intelligent proportions, beautiful optical balance, immaculate spacing, deliberate negative space and precise curves. Every letter correctly spelled, including .nl. Distinguish this concept by actual construction and typography, not decorative backgrounds. Keep both the hero lockup and the two context mockups fully visible with clear margins; no cropping of the brand. No explanatory paragraphs, fake guidelines, color swatch strips, texture filler or extra brand names. Deliver only the finished board.
