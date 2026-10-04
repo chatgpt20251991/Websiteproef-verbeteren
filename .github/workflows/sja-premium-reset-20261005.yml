@@ -1,0 +1,42 @@
+name: SJA premium typographic logo reset
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sja-premium-reset-20261005.yml'
+      - 'sja-premium-reset-20261005/**'
+permissions:
+  contents: read
+concurrency:
+  group: sja-premium-reset-20261005
+  cancel-in-progress: false
+jobs:
+  concept:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        asset: ["01-noir-aeroline","02-editorial-oxblood","03-argent-motion","04-velvet-signature","05-monolith","06-copper-aperture","07-mist-line","08-nightfall","09-maison-sage","10-carbon-pulse"]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install existing transport dependencies
+        run: python3 -m pip install --disable-pip-version-check requests==2.32.5 Pillow==11.3.0
+      - name: Validate exact brief
+        run: python3 sja-premium-reset-20261005/run_concept.py --asset "${{ matrix.asset }}" --validate-only
+      - name: Generate one premium concept
+        env:
+          OPENAI_API_KEY: ${{ secrets.AVIN2 }}
+        run: python3 sja-premium-reset-20261005/run_concept.py --asset "${{ matrix.asset }}"
+      - name: Preserve concept and exact prompt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: premium-reset-${{ matrix.asset }}
+          path: premium-reset-output/
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
