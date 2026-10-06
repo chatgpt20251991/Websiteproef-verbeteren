@@ -1,0 +1,28 @@
+{
+  "version": "20260909",
+  "deployment_performed": false,
+  "candidate_pages": 9,
+  "all_main_html_preserved": true,
+  "new_unit_tests_passed": 10,
+  "existing_brand_unit_tests_passed": 13,
+  "local_browser_test_cases_passed": 14,
+  "local_browser_test_cases_failed": 0,
+  "browser": "Chromium, inline offline preview, system fallback font",
+  "viewports": [
+    {"width": 390, "height": 844, "device_pixel_ratio": 3},
+    {"width": 1440, "height": 1000, "device_pixel_ratio": 1},
+    {"width": 3840, "height": 2160, "device_pixel_ratio": 1}
+  ],
+  "measured_source_pixels": {
+    "desktop_hero": [1672, 941],
+    "mobile_hero": [1106, 1422],
+    "service_images": [1586, 992],
+    "software_closeup": [1672, 941]
+  },
+  "public_source_audit_run": 34371985953,
+  "raster_upscaling_performed": false,
+  "native_3d_added": false,
+  "image_sequence_added": false,
+  "native_4k_photography_created": false,
+  "limitations": ["Not live", "Not a complete site export", "No production font in offline preview", "No Safari/Firefox test", "No real-device FPS or Core Web Vitals certification"]
+}

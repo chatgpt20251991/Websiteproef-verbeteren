@@ -1,0 +1,79 @@
+name: Inspect current Avenzo motion assets
+on:
+  push:
+    branches: [avenzo-motion-20260909]
+    paths: ['.github/workflows/avenzo-motion-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip install Pillow==11.3.0
+      - name: Read existing public pages and image dimensions only
+        shell: bash
+        run: |
+          python - <<'PY'
+          import io, json, re, shutil, hashlib
+          from pathlib import Path
+          from datetime import datetime, timezone
+          from html.parser import HTMLParser
+          from urllib.request import urlopen, Request
+          from urllib.parse import urlsplit
+          from PIL import Image
+          from concurrent.futures import ThreadPoolExecutor
+          origin='https://avenzodigital.nl'
+          root=Path('motion-audit'); root.mkdir()
+          public=root/'public'; public.mkdir()
+          assets=set()
+          pages=['/','/contact/','/studio/','/expertise/websites-conversie/','/expertise/ai-automatisering/','/expertise/software-portalen/','/expertise/data-dashboards/','/expertise/vindbaarheid-onderzoek/','/expertise/testen-doorontwikkeling/']
+          allowed={'.webp','.png','.jpg','.jpeg','.avif','.svg','.css','.js','.glb','.gltf'}
+          class Parser(HTMLParser):
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag in ['img','source','script','link']:
+                      for value in [a.get('src',''), a.get('href','')]+[x.strip().split(' ')[0] for x in a.get('srcset','').split(',')]:
+                          u=urlsplit(value)
+                          if u.hostname and u.hostname not in {'avenzodigital.nl','www.avenzodigital.nl'}: continue
+                          if u.path.startswith('/assets/') and Path(u.path).suffix.lower() in allowed and '..' not in u.path.split('/'):
+                              assets.add(u.path)
+          def get(path,limit=8*1024*1024):
+              with urlopen(Request(origin+path,headers={'User-Agent':'AvenzoMotionReadOnlyAudit/1.0'}),timeout=25) as r:
+                  if r.status!=200 or urlsplit(r.geturl()).hostname not in {'avenzodigital.nl','www.avenzodigital.nl'}: raise ValueError('Unexpected response')
+                  data=r.read(limit+1)
+                  if len(data)>limit: raise ValueError('Resource too large')
+                  return data,r.headers.get('Content-Type','')
+          observations=[]
+          for path in pages:
+              data,ctype=get(path)
+              if 'text/html' not in ctype: raise ValueError('Not HTML')
+              text=data.decode(); Parser().feed(text)
+              dest=public/path.strip('/')/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
+              observations.append({'path':path,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'brand_refresh_present':'data-avenzo-brand-refresh="20260909"' in text})
+          if len(assets)>150: raise ValueError('Unexpected asset count')
+          def collect(path):
+              row={'path':path}
+              try:
+                  data,ctype=get(path)
+                  if any(x in ctype for x in ['font','woff','opentype','truetype']): raise ValueError('Font excluded')
+                  if Path(path).suffix in {'.css','.js','.svg'} and re.search(rb'data:(?:font/|application/(?:font|x-font)|[^;,]*(?:woff|ttf|otf))',data,re.I): raise ValueError('Embedded font excluded')
+                  dest=public/path.lstrip('/');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
+                  row.update(bytes=len(data),content_type=ctype,sha256=hashlib.sha256(data).hexdigest())
+                  if Path(path).suffix in {'.webp','.png','.jpg','.jpeg','.avif'}:
+                      with Image.open(io.BytesIO(data)) as im:row.update(width=im.width,height=im.height)
+              except Exception as exc:row['error']=str(exc)[:200]
+              return row
+          with ThreadPoolExecutor(max_workers=6) as pool:images=list(pool.map(collect,sorted(assets)))
+          shutil.copytree('recovery',root/'recovery')
+          report={'checked_at_utc':datetime.now(timezone.utc).isoformat(),'deployment_performed':False,'fonts_included':False,'pages':observations,'assets':images,'scope':'Publicly linked assets only. Raster dimensions are measured, not inferred from filenames. No upscaling, credentials, email, DNS or publishing changes.'}
+          (root/'audit.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avenzo-current-motion-assets
+          path: motion-audit/
+          retention-days: 7

@@ -1,0 +1,75 @@
+/* Avenzo motion layer. Load after site CSS and approved brand-refresh CSS. */
+:root{--av-ease:cubic-bezier(.22,1,.36,1)}
+.av-scroll-progress{position:fixed;inset:0 0 auto;height:3px;z-index:120;background:#641d2a;transform:scaleX(0);transform-origin:left;pointer-events:none}
+.av-motion-disabled .av-scroll-progress{display:none}
+.av-motion-control{display:block;margin:0 0 1.3rem auto;padding:.55rem .8rem;min-height:44px;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:.78rem;line-height:1.2;cursor:pointer;opacity:.85}
+.av-motion-control:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.av-motion-control:disabled{cursor:default}
+.av-motion-visual:not(picture){position:relative;isolation:isolate}
+.av-motion-visual{overflow:hidden}
+.av-motion-image{backface-visibility:hidden;transform-origin:center;image-rendering:auto}
+.av-motion-enabled .av-motion-image{transition:none!important}
+.av-motion-enabled .av-in-view .av-motion-image{will-change:transform}
+.av-light{position:absolute;inset:-40%;pointer-events:none;background:radial-gradient(ellipse at center,#fff8 0,transparent 55%);mix-blend-mode:soft-light;opacity:0;transition:opacity .3s}
+.av-data-flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform-origin:center}
+.av-data-flow path{stroke:#fff3dc;stroke-width:2;stroke-linecap:round;opacity:0}
+.av-motion-disabled .av-data-flow,.av-motion-disabled .av-light{display:none}
+.av-detail-visual{margin-bottom:1.3rem;aspect-ratio:1586/992;background:#e5e4df}
+.av-detail-visual img.detail-art{display:block;width:100%;height:100%;margin:0;object-fit:cover;object-position:center}
+.av-motion-enabled .av-reveal-wait{opacity:0;transform:translate3d(0,24px,0)}
+.av-motion-enabled .av-revealed{opacity:1;transform:translate3d(0,0,0);transition:opacity .7s var(--av-ease) var(--av-delay,0ms),transform .85s var(--av-ease) var(--av-delay,0ms)}
+.av-reveal-wait:focus-within{opacity:1!important;transform:none!important}
+.av-motion-enabled .hero-copy h1>span{transform-origin:left;transition:none}
+.av-story-meter{display:none;height:2px;max-width:16rem;background:var(--line,#0002);margin:1.5rem 0 0;overflow:hidden}
+.av-story-meter>span{display:block;width:100%;height:100%;background:var(--accent,#641d2a);transform-origin:left;transform:scaleX(0)}
+.av-story-visual{display:none;margin-top:2.3rem;aspect-ratio:1.65;overflow:hidden;background:#e3e2dd}
+.av-story-visual img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.av-motion-enabled .av-story-meter{display:block}
+.av-motion-enabled .av-story ol li{transition:border-color .35s,color .35s}
+.av-motion-enabled .av-story ol li>span{transition:color .3s,transform .4s var(--av-ease)}
+.av-motion-enabled .av-story .av-step-active>span{color:#641d2a;transform:translateX(3px)}
+@media(min-width:1100px){
+  .av-motion-enabled .working-section.av-story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(3rem,7vw,8rem);padding-top:clamp(5rem,7vw,8rem);padding-bottom:clamp(5rem,7vw,8rem);align-items:start}
+  .av-motion-enabled .av-story.av-sticky-safe>div:first-child{position:sticky;top:110px}
+  .av-motion-enabled .home .working-section.av-story h2{font-size:clamp(2.7rem,3.5vw,4.1rem);line-height:1.07}
+  .av-motion-enabled .av-story-visual{display:block}
+  .av-motion-enabled .home .working-section.av-story ol{display:block;align-self:auto}
+  .av-motion-enabled .working-section.av-story ol li,.av-motion-enabled .home .working-section.av-story ol li:first-child{display:flex;min-height:clamp(230px,37vh,360px);border-left:0;border-top:1px solid var(--line,#0002);padding:2.4rem 0;gap:1.6rem;align-items:flex-start}
+  .av-motion-enabled .home .working-section.av-story h3{font-size:clamp(1.5rem,1.8vw,2rem);line-height:1.18}
+  .av-motion-enabled .home .working-section.av-story p{font-size:1.075rem;line-height:1.65}
+  .av-motion-enabled .home .working-section.av-story li>span{font-size:2rem;flex:0 0 2.5rem;line-height:1}
+  .av-motion-enabled .working-section.av-story ol li.av-step-active{border-color:#641d2a}
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .av-motion-enabled .button,.av-motion-enabled .av-footer__cta{transition:background .25s,color .25s,box-shadow .3s,transform .35s var(--av-ease)}
+  .av-motion-enabled .button:hover,.av-motion-enabled .av-footer__cta:hover{transform:translateY(-2px);box-shadow:0 8px 22px #00000014}
+  .av-motion-enabled .button .arrow,.av-motion-enabled .av-footer__cta .arrow,.av-motion-enabled .text-link .arrow{transition:transform .35s var(--av-ease)}
+  .av-motion-enabled .button:hover .arrow,.av-motion-enabled .av-footer__cta:hover .arrow,.av-motion-enabled .text-link:hover .arrow{transform:translate(3px,-3px)}
+}
+@media(prefers-reduced-motion:no-preference){html.av-motion-enabled{scroll-behavior:smooth}}
+@media(max-width:760px){
+  .av-motion-enabled .av-reveal-wait{transform:translate3d(0,12px,0)}
+  .av-motion-enabled .av-story ol li>span{transform:none}
+  .av-story-visual{display:none!important}
+  .av-motion-control{margin-top:1rem;font-size:.75rem}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  .av-scroll-progress,.av-data-flow,.av-light,.av-story-meter,.av-story-visual{display:none!important}
+  .av-motion-image,.hero-copy h1>span,.av-reveal-wait,.av-revealed{transform:none!important;opacity:1!important;transition:none!important;animation:none!important}
+  .av-story>div:first-child{position:static!important}
+}
+@media print{
+  .av-motion-control,.av-scroll-progress,.av-story-meter,.av-data-flow,.av-light,.av-story-visual{display:none!important}
+  .av-motion-image,.hero-copy h1>span,.av-reveal-wait,.av-revealed{transform:none!important;opacity:1!important;transition:none!important}
+  .av-story>div:first-child{position:static!important}
+  .av-story ol li{min-height:0!important;break-inside:avoid}
+}
+
+html.av-motion-disabled{scroll-behavior:auto}
+.av-motion-disabled .precision-service:hover .precision-art img{transform:none!important;transition:none!important}
+.av-motion-control{margin-bottom:0;padding-bottom:.65rem;margin-top:1rem}
+.av-footer__inner:has(.av-motion-control){padding-bottom:1.3rem}
+
+/* White vector mark on the existing dark desktop hero; burgundy stays on light mobile/detail headers. */
+@media(min-width:761px){.home .site-header .av-brand img{filter:brightness(0) invert(1)}}
